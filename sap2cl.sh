@@ -3,10 +3,13 @@
 # Effect is dynamic and definive --> Next start will be as Client mode
 # Run : bash sap2cl.sh
 
-echo "========================================"
-echo " Switch from Hotspot (AP+DHP) to Client "
-echo "  Next start will be : Wifi Client mode "
-echo "========================================"
+echo "========================================="
+echo " Switch from Hotspot (AP+DHP) to Client  "
+echo " Immediate Effect :                      "
+echo "    Modify your current SSID             "
+echo "    ssh to Rasp Client                   "
+echo "  Next start will be : Wifi Client mode  "
+echo "========================================="
 echo " "
 echo "Stopping hostapd, dnsmasq "
 sudo systemctl stop hostapd.service

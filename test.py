@@ -1,8 +1,23 @@
+# ========================================================
+# Projet Lapem : Lecteur Audio Pour Ecole Maternelle
+# Christian Klugesherz
+# christian.klugesherz@gmail.com
+# Mars 2022
+# ========================================================
+
+# ========================================================
+#                          Import
+# ========================================================
 import time
 import RPi.GPIO as GPIO
 
-flag_callback = False
+# ========================================================
+#                       Declarations
+# ========================================================
 
+# --------------------------------
+# Button
+# --------------------------------
 # Play-Pause Button
 # set GPIO25 as input (button)
 # Internal Pull Down to avoid external resistors
@@ -15,116 +30,157 @@ BPlayPause = 25
 # 3,3 V
 BBack = 24
 
+# Swap between Play and Pause
+BPlayPauseSwap = 0
+
+# Boutton Back Counter before to enter in specific mode
+BBackCnt = 0
+BBackCntTh = 5
+
+
+# --------------------------------
+# Led
+# --------------------------------
+
 # Play Led
 # set GPIO18 as an output (LED)
 # 5V
 LEDPlay = 18
 
-# How long we want the LED to stay on/off/time
-BPlayONT = 0.5
-BPlayOFFT = 0.25
-BPlayBT = -1
+# How long we want the LED to stay on/off/time/Loop
+LEDPlayONT = 0.5
+LEDPlayOFFT = 0.5
+LEDPlayT = -1
+LEDPlayNbL = 0
 
-BBackONT = 1
-BBackOFFT = 0
-BBackBT = -1
 
 # Power Led
 # set GPIO17 as an output (LED)
 # 5V
 LEDPower = 17
 
+# How long we want the LED to stay on/off/time/Loop
+LEDPowerONT = 0.5
+LEDPowerOFFT = 0.5
+LEDPowerT = -1
+LEDPowerNbL = 10
 
+# ========================================================
+#                         Functions
+# ========================================================
+# ---------------------------------------------
+# init function
+#     All your initialization here
+# ---------------------------------------------
 def init():
-    # make all your initialization here
     # Input declaration Mode : BCM GPIO numbering
     GPIO.setmode(GPIO.BCM)
 
+    # Leds
     GPIO.setup(LEDPlay, GPIO.OUT)
     GPIO.setup(LEDPower, GPIO.OUT)
 
-    # Init Leds
     GPIO.output(LEDPlay, 0)
     GPIO.output(LEDPower, 1)
 
     # Button
+    # add an interrupt on pin on rising edge
     GPIO.setup(BPlayPause, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     GPIO.setup(BBack, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-    # add an interrupt on pin on rising edge
-    GPIO.add_event_detect(BPlayPause, GPIO.RISING, callback=my_callback, bouncetime=300)
-    GPIO.add_event_detect(BBack, GPIO.RISING, callback=my_callback, bouncetime=300)
+    GPIO.add_event_detect(BPlayPause, GPIO.RISING, callback=but_callback, bouncetime=300)
+    GPIO.add_event_detect(BBack, GPIO.RISING, callback=but_callback, bouncetime=300)
 
-def my_callback(vbut):
-    # callback = function which call when a signal rising edge on pin
-    global flag_callback
-    global BPlayONT
-    global BPlayOFFT
-    global BBackONT
-    global BBackOFFT
-    
-    flag_callback = True
-    print(vbut)
+# ---------------------------------------------
+# button Callback fucntion
+#    function which call when a signal rising edge on pin
+# ---------------------------------------------
+def but_callback(vbut):
+
+    global BPlayPauseSwap
+    global BBackCnt
+
+    global LEDPlayONT
+    global LEDPlayOFFT
+    global LEDPlayNbL
+
+    global LEDPowerNbL
+    global LEDPowerOFFT
+    global LEDPowerNbL
+
+    #print(vbut)
 
     if vbut == BPlayPause:
-        print("Button Play Pause")
-        BPlayONT = 1
-        BPlayOFFT = 0
-    elif vbut == BBack:
-        BBackONT = 0.5
-        BBackOFFT = 0.5
+
+        # Swap Play Pause mode
+        if BPlayPauseSwap == 0:
+            BPlayPauseSwap = 1
+            print("Button Play")
+            LEDPlayONT = 1
+            LEDPlayOFFT = 0
+            LEDPlayNbL = 1
+
+        else:
+            BPlayPauseSwap = 0
+            print("Button Pause")
+            LEDPlayONT = 0
+            LEDPlayOFFT = 1
+            LEDPlayNbL = 1
+
     else:
         print("Button Back")
-        BPlayONT = 0
-        BPlayOFFT = 0
+        LEDPlayONT = 0.5
+        LEDPlayOFFT = 0.5
+        LEDPlayNbL = 5
 
+# ---------------------------------------------
+# ---------------------------------------------
 def process_callback():
     # make process here
     print('something')
 
+# ---------------------------------------------
+# ---------------------------------------------
 if __name__ == '__main__':
-    # your main function here
+    # call init
+    init()
+
     try:
-        # 1- first call init function
-        init()
-
-        # 2- looping infinitely
+        # looping infinitely
         while True:
-            #3- test if a callback happen
 
+            # monotonic only available in Python3 !
             now = time.monotonic()
 
+            if LEDPlayNbL > 0:
+                if GPIO.input(LEDPlay) == False:
+                    if now >= LEDPlayT + LEDPlayOFFT:
+                        GPIO.output(LEDPlay, 1)
+                        LEDPlayT = now
+                        LEDPlayNbL =  LEDPlayNbL - 1 
+                if GPIO.input(LEDPlay) == True:
+                    if now >= LEDPlayT + LEDPlayONT:
+                        GPIO.output(LEDPlay, 0)
+                        LEDPlayT = now
+                        LEDPlayNbL =  LEDPlayNbL - 1 
 
-            if GPIO.input(LEDPlay) == False:
-                if now >= BPlayBT + BPlayOFFT:
-                    GPIO.output(LEDPlay, 1)
-                    BPlayBT = now
-            if GPIO.input(LEDPlay) == True:
-                if now >= BPlayBT + BPlayONT:
-                    GPIO.output(LEDPlay, 0)
-                    BPlayBT = now
+            if LEDPowerNbL > 0:
+                if GPIO.input(LEDPower) == False:
+                    if now >= LEDPowerT + LEDPowerOFFT:
+                        GPIO.output(LEDPower, 1)
+                        LEDPowerT = now
+                        LEDPowerNbL = LEDPowerNbL - 1
+                        print(LEDPowerNbL)
 
-
-            if GPIO.input(LEDPower) == False:
-                if now >= BBackBT + BBackOFFT:
-                    GPIO.output(LEDPower, 1)
-                    BBackBT = now
-            if GPIO.input(LEDPower) == True:
-                if now >= BBackBT + BBackONT:
-                    GPIO.output(LEDPower, 0)
-                    BBackBT = now
-
-
-
-            if flag_callback :
-                #4- call a particular function
-                process_callback()
-                #5- reset flag for next interrupt
-                flag_callback = False
-        pass
+                if GPIO.input(LEDPower) == True:
+                    if now >= LEDPowerT + LEDPowerONT:
+                        GPIO.output(LEDPower, 0)
+                        LEDPowerT = now
+                        LEDPowerNbL = LEDPowerNbL - 1
+                        print(LEDPowerNbL)
 
     # this block will run no matter how the try block exits
-    finally:
+    except KeyboardInterrupt:
+        print("Interrupt")
         GPIO.cleanup()  # clean up after yourself
-
 
