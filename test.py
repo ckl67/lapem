@@ -35,8 +35,7 @@ BPlayPauseSwap = 0
 
 # Boutton Back Counter before to enter in specific mode
 BBackCnt = 0
-BBackCntTh = 5
-
+BBackCntTh= 5
 
 # --------------------------------
 # Led
@@ -48,10 +47,10 @@ BBackCntTh = 5
 LEDPlay = 18
 
 # How long we want the LED to stay on/off/time/Loop
-LEDPlayONT = 0.5
-LEDPlayOFFT = 0.5
+LEDPlayONT = 1
+LEDPlayOFFT = 0
 LEDPlayT = -1
-LEDPlayNbL = 0
+LEDPlayNbL = 1
 
 
 # Power Led
@@ -60,10 +59,11 @@ LEDPlayNbL = 0
 LEDPower = 17
 
 # How long we want the LED to stay on/off/time/Loop
-LEDPowerONT = 0.5
-LEDPowerOFFT = 0.5
+LEDPowerONT = 1
+LEDPowerOFFT = 0
 LEDPowerT = -1
-LEDPowerNbL = 10
+LEDPowerNbL = 1
+LEDPowerLInfinite = False
 
 # ========================================================
 #                         Functions
@@ -99,6 +99,7 @@ def but_callback(vbut):
 
     global BPlayPauseSwap
     global BBackCnt
+    global BBackCntTh  
 
     global LEDPlayONT
     global LEDPlayOFFT
@@ -107,8 +108,7 @@ def but_callback(vbut):
     global LEDPowerNbL
     global LEDPowerOFFT
     global LEDPowerNbL
-
-    #print(vbut)
+    global LEDPowerLInfinite
 
     if vbut == BPlayPause:
 
@@ -127,17 +127,75 @@ def but_callback(vbut):
             LEDPlayOFFT = 1
             LEDPlayNbL = 1
 
+        LEDPowerLInfinite = False
+        BBackCnt=0  
+
     else:
-        print("Button Back")
-        LEDPlayONT = 0.5
-        LEDPlayOFFT = 0.5
-        LEDPlayNbL = 5
+        #Button Back Pressed
+        if BBackCnt < BBackCntTh:
+            print("Button Back")
+            BBackCnt=BBackCnt+1  
+            LEDPlayONT = 0.5
+            LEDPlayOFFT = 0.5
+            LEDPlayNbL = 5
+        else:
+            print("Spetial Mode")
+            LEDPlayONT = 0.25
+            LEDPlayOFFT = 0.25
+            LEDPlayNbL = 20
+
+            LEDPowerONT = 0.5
+            LEDPowerOFFT = 0.5
+            LEDPowerNbL = 1
+            LEDPowerLInfinite = True
+
+# ---------------------------------------------
+# ---------------------------------------------
+def p_LEDPlay_On():
+    GPIO.output(LEDPlay, 1)
+
+# ---------------------------------------------
+# ---------------------------------------------
+def p_LEDPlay_Off():
+    GPIO.output(LEDPlay, 0)
+
+# ---------------------------------------------
+# ---------------------------------------------
+def p_LEDPlay_Blink():
+
+    # monotonic only available in Python3 !
+    now = time.monotonic()
+
+    if LEDPlayNbL > 0:
+        if GPIO.input(LEDPlay) == False:
+            if now >= LEDPlayT + LEDPlayOFFT:
+                GPIO.output(LEDPlay, 1)
+                LEDPlayT = now
+                LEDPlayNbL =  LEDPlayNbL - 1 
+        if GPIO.input(LEDPlay) == True:
+            if now >= LEDPlayT + LEDPlayONT:
+                GPIO.output(LEDPlay, 0)
+                LEDPlayT = now
+                LEDPlayNbL =  LEDPlayNbL - 1 
+
+
+# ---------------------------------------------
+# ---------------------------------------------
+def p_LEDPower_On():
+    GPIO.output(LEDPower, 1)
+
+# ---------------------------------------------
+# ---------------------------------------------
+def p_LEDPower_Off():
+    GPIO.output(LEDPower, 0)
+
 
 # ---------------------------------------------
 # ---------------------------------------------
 def process_callback():
     # make process here
     print('something')
+
 
 # ---------------------------------------------
 # ---------------------------------------------
@@ -164,20 +222,18 @@ if __name__ == '__main__':
                         LEDPlayT = now
                         LEDPlayNbL =  LEDPlayNbL - 1 
 
-            if LEDPowerNbL > 0:
+            if LEDPowerNbL > 0 or LEDPowerLInfinite == True : 
                 if GPIO.input(LEDPower) == False:
                     if now >= LEDPowerT + LEDPowerOFFT:
                         GPIO.output(LEDPower, 1)
                         LEDPowerT = now
                         LEDPowerNbL = LEDPowerNbL - 1
-                        print(LEDPowerNbL)
 
                 if GPIO.input(LEDPower) == True:
                     if now >= LEDPowerT + LEDPowerONT:
                         GPIO.output(LEDPower, 0)
                         LEDPowerT = now
                         LEDPowerNbL = LEDPowerNbL - 1
-                        print(LEDPowerNbL)
 
     # this block will run no matter how the try block exits
     except KeyboardInterrupt:
