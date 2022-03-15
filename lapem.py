@@ -1,7 +1,7 @@
 # ========================================================
-# Projet Lapem : Lecteur Audio Pour Ecole Maternelle
-# Christian Klugesherz
-# christian.klugesherz@gmail.com
+# Projet : Lapem = Lecteur Audio Pour Ecole Maternelle
+# Author : Christian Klugesherz
+#          christian.klugesherz@gmail.com
 # Mars 2022
 # ========================================================
 
@@ -16,19 +16,33 @@ import RPi.GPIO as GPIO
 # ========================================================
 
 # --------------------------------
+# Lapem Mode 
+#   MODE_AP     : Access Point
+#   MODE_CLIENT : Wifi Client
+# --------------------------------
+
+MODE_AP = 0
+MODE_CLIENT = 1
+
+# --------------------------------
 # Button
 # --------------------------------
 # Play-Pause Button
 # set GPIO25 as input (button)
 # Internal Pull Down to avoid external resistors
 # 3,3 V
-BPlayPause = 25
+BUT_PLAY_PAUSE = 25
 
 # Back Button
 # set GPIO24 as input (button)
 # Internal Pull Down to avoid external resistors
 # 3,3 V
-BBack = 24
+BUT_BACK = 24
+
+# --------------------------------
+# Threshold before to access to Specific Mode
+# --------------------------------
+BUTTON_BACK_THRESHOLD= 5
 
 # --------------------------------
 # Led
@@ -37,52 +51,83 @@ BBack = 24
 # Play Led
 # set GPIO18 as an output (LED)
 # 5V
-LEDPlay = 18
+LED_PLAY = 18
 
 # Power Led
 # set GPIO17 as an output (LED)
 # 5V
-LEDPower = 17
+LED_POWER = 17
 
+# --------------------------------
+#   Index for LedState
+#   Usage : LedState[STATE_PLAY][ID_PLAY]["LedMode"]
+# --------------------------------
+
+STATE_NOTHING = 0
+STATE_PLAY = 1
+STATE_PAUSE = 2
+STATE_BACK = 3
+
+# --------------------------------
+#  Led Index
+#   Usage : LedState[STATE_PLAY][ID_PLAY]["LedMode"]
+# --------------------------------
+
+ID_PLAY = 0
+ID_POWER = 1
+
+# --------------------------------
+#  Led Mode
+#       For STATIC we will take the "ONT" status
+#       For BLINK we will LOOP : NbL times 
+#
+#   Usage : LedState[STATE_PLAY][ID_PLAY]["LedMode"] = BLINK
+#
+# --------------------------------
+
+STATIC = 0
+BLINK = 1
+INFINITY = 2
+
+# ========================================================
+#                      Variables LED
+# ========================================================
 # -------------
 # Led Nothing
 # -------------
-# Mode : "Static", "Blinck", "Infinity"
-# For Static we will take the "ONT" status
-# For Dynamic we will end by OFFT
-LedPlayNothing = { 
-        "Mode"   : "Static", 
-        "ONT"    : 0,
-        "OFFT"   : 0,
-        "NbL"    : 1
+
+LedPlayNothing = {
+        "LedMode"   : STATIC,
+        "ONT"       : 0,
+        "OFFT"      : 0,
+        "NbL"       : 1
         }
 
 LedPowerNothing = {
-        "Mode"   : "Static", 
-        "ONT"    : 1,
-        "OFFT"   : 0,
-        "NbL"    : 1
+        "LedMode"   : STATIC, 
+        "ONT"       : 1,
+        "OFFT"      : 0,
+        "NbL"       : 1
         }
 
-LedNothing = [LedPlayNothing, LedPowerNothing]
+LedNothing = [LedPlayNothing, LedPowerNothing ] 
 
 # -------------
 # Led Play
 # -------------
-# Mode : "Static", "Blinck", "Infinity"
-# For Static we will take the "ONT" status
-# For Dynamic we will end by OFFT
+
 LedPlayPlay = { 
-        "Mode"   : "Static", 
-        "ONT"    : 1,
-        "OFFT"   : 0,
-        "NbL"    : 1
+        "LedMode"   : STATIC, 
+        "ONT"       : 1,
+        "OFFT"      : 0,
+        "NbL"       : 1,
         }
+
 LedPowerPlay = {
-        "Mode"   : "Static", 
-        "ONT"    : 1,
-        "OFFT"   : 0,
-        "NbL"    : 1
+        "LedMode"   : STATIC, 
+        "ONT"       : 1,
+        "OFFT"      : 0,
+        "NbL"       : 1,
         }
 
 LedPlay = [LedPlayPlay, LedPowerPlay]
@@ -90,21 +135,18 @@ LedPlay = [LedPlayPlay, LedPowerPlay]
 # -------------
 # Led Pause
 # -------------
-# Mode : "Static", "Blinck", "Infinity"
-# For Static we will take the "ONT" status
-# For Dynamic we will end by OFFT
 LedPlayPause = { 
-        "Mode"   : "Static", 
-        "ONT"    : 0,
-        "OFFT"   : 0,
-        "NbL"    : 5
+        "LedMode"   : STATIC, 
+        "ONT"       : 0,
+        "OFFT"      : 0,
+        "NbL"       : 1
         }
 
 LedPowerPause = {
-        "Mode"   : "Static", 
-        "ONT"    : 1,
-        "OFFT"   : 0,
-        "NbL"    : 1
+        "LedMode"   : STATIC, 
+        "ONT"       : 1,
+        "OFFT"      : 0,
+        "NbL"       : 1
         }
 
 LedPause = [LedPlayPause, LedPowerPause]
@@ -112,73 +154,57 @@ LedPause = [LedPlayPause, LedPowerPause]
 # -------------
 # Led Back
 # -------------
-# Mode : "Static", "Blinck", "Infinity"
-# For Static we will take the "ONT" status
-# For Dynamic we will end by OFFT
 LedPlayBack = { 
-        "Mode"   : "Blink", 
-        "ONT"    : 0.5,
-        "OFFT"   : 0.5,
-        "NbL"    : 3
+        "LedMode"   : BLINK, 
+        "ONT"       : 0.1,
+        "OFFT"      : 0.1,
+        "NbL"       : 10
         }
 
 LedPowerBack = {
-        "Mode"   : "Static", 
-        "ONT"    : 1,
-        "OFFT"   : 0,
-        "NbL"    : 1
+        "LedMode"   : STATIC, 
+        "ONT"       : 1,
+        "OFFT"      : 0,
+        "NbL"       : 1
         }
 
 LedBack = [LedPlayBack, LedPowerBack]
 
 # --------------------------------
-# Lapem Led State 
-# Nothing
+# LED State
+#   Usage :  
+#           : c_State = STATE_PAUSE
+#           : if LedState[c_State][ID_PLAY]["LedMode"] == BLINK
 # --------------------------------
-LapemLedState = { 
-        'Nothing'   : LedNothing,
-        'Play'      : LedPlay,
-        'Pause'     : LedPause,
-        'Back'      : LedBack, 
-        }
-
-print(LapemMode[cState][ID_LED_POWER]["Mode"])
-
-# --------------------------------
-# Lapem Mode 
-#   AP: Access Point
-#   WC: Wifi Client
-# --------------------------------
-LapemMode = { 
-        'Mode'   : "AP",
-        }
-
-
-# --------------------------------
-# --------------------------------
-BBackCntTh= 5
+LedState = [ LedNothing, LedPlay, LedPause, LedBack] 
 
 # ========================================================
 #                       Variables
 # ========================================================
 
-# Swap between Play and Pause
-swapPlayPauseMode = 0
+# Swicht between Play and Pause
+sw_PlayPause = 0
 
-# Boutton Back Counter before to enter in specific mode
-cntBBack = 0
+# Button Back Counter before to enter in a Specific Mode
+cnt_Bback = 0
 
 # Led Power timer
-tLEDPower = -1
+t_LPower = -1
 
 # Led Play timer
-tLEDPlay = -1
+t_LPlay = -1
 
 # Current Lapem Mode
-cLapemMode = "AP" 
+c_Mode = MODE_AP
 
 # Current Lapem Led State
-cLapemLedState = "Noting"
+c_State = STATE_NOTHING
+
+# Blink Counter for Led Play
+cnt_BlinkLedPlay = 0
+
+# Blink Counter for Led Power
+cnt_BlinkLedPower = 0
 
 # ========================================================
 #                         Functions
@@ -188,129 +214,207 @@ cLapemLedState = "Noting"
 #     All your initialization here
 # ---------------------------------------------
 def init():
+    #print(t_LPlay)
+    
     # Input declaration Mode : BCM GPIO numbering
     GPIO.setmode(GPIO.BCM)
 
     # Leds
-    GPIO.setup(LEDPlay, GPIO.OUT)
-    GPIO.setup(LEDPower, GPIO.OUT)
+    GPIO.setup(LED_PLAY, GPIO.OUT)
+    GPIO.setup(LED_POWER, GPIO.OUT)
 
-    GPIO.output(LEDPlay, 0)
-    GPIO.output(LEDPower, 1)
+    # Default status
+    GPIO.output(LED_PLAY, 0)
+    GPIO.output(LED_POWER, 1)
 
     # Button
-    # add an interrupt on pin on rising edge
-    GPIO.setup(BPlayPause, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.setup(BBack, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(BUT_PLAY_PAUSE, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(BUT_BACK, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-    GPIO.add_event_detect(BPlayPause, GPIO.RISING, callback=but_callback, bouncetime=300)
-    GPIO.add_event_detect(BBack, GPIO.RISING, callback=but_callback, bouncetime=300)
+    # Add an interrupt on pin on rising edge
+    GPIO.add_event_detect(BUT_PLAY_PAUSE, GPIO.RISING, callback=but_callback, bouncetime=300)
+    GPIO.add_event_detect(BUT_BACK, GPIO.RISING, callback=but_callback, bouncetime=300)
 
 # ---------------------------------------------
-# button Callback fucntion
+# Button Callback fucntion
 #    function which call when a signal rising edge on pin
 # ---------------------------------------------
 def but_callback(vbut):
 
-    global BBackCntTh  
-    global cntBBack
-    
-    global cLapemLedState 
-    global cLapemMode
-    
-    global swapBPlayPause
+    global BUTTON_BACK_THRESHOLD  
 
-    if vbut == BPlayPause:
+    global cnt_Bback
+    global c_State 
+    global c_Mode
+    global sw_PlayPause
 
-        cntBBack=0  
-        # Swap Play Pause mode
-        if swapBPlayPause == 0:
-            swapBPlayPause = 1
-            cLapemLedState = "Play"
+    global cnt_BlinkLedPlay
+    global cnt_BlinkLedPower
+    
+    if vbut == BUT_PLAY_PAUSE:
+
+        # Reinit Button Back Counter, before to enter in the Specific Mode
+        cnt_Bback=0  
+        
+        # Reinit Blink Counters
+        cnt_BlinkLedPower=0
+        cnt_BlinkLedPlay=0
+
+        # Button Play or Pause
+        if sw_PlayPause == 0:
+            sw_PlayPause = 1
+            c_State = STATE_PLAY
             print("Button Play")
         else:
-            swapBPlayPause = 0
-            cLapemLedState = "Pause"
+            sw_PlayPause = 0
+            c_State = STATE_PAUSE
             print("Button Pause")
     else:
         #Button Back Pressed
-        if cntBBack < BBackCntTh:
+        if cnt_Bback < BUTTON_BACK_THRESHOLD:
             print("Button Back")
-            cLapemLedState = "Back"
-            cntBBack=cntBBack+1  
+            c_State = STATE_BACK
+            cnt_Bback=cnt_Bback+1  
         else:
-            print("Special Mode")
-            cLapemMode = "AP"
+            print("Special Mode, and we stay in this Mode !!")
+            c_Mode = MODE_AP
 
 # ---------------------------------------------
 # ---------------------------------------------
-def p_LED_Blink():
+def p_LED():
 
-    # monotonic only available in Python3 !
-    now = time.monotonic()
-
-    if LEDPlayNbL > 0:
-        if GPIO.input(LEDPlay) == False:
-            if now >= LEDPlayT + LEDPlayOFFT:
-                GPIO.output(LEDPlay, 1)
-                LEDPlayT = now
-                LEDPlayNbL =  LEDPlayNbL - 1 
-        if GPIO.input(LEDPlay) == True:
-            if now >= LEDPlayT + LEDPlayONT:
-                GPIO.output(LEDPlay, 0)
-                LEDPlayT = now
-                LEDPlayNbL =  LEDPlayNbL - 1 
-
-# ---------------------------------------------
-# ---------------------------------------------
-def p_LEDPower_Blink():
+    # Clarifications
+    # If you set a value of a variable inside the function, python understands it as creating a local variable with that name. 
+    # This local variable masks the global variable.
     
+    global t_LPlay
+    global t_LPower
+    global cnt_BlinkLedPlay
+    global cnt_BlinkLedPower
+
     # monotonic only available in Python3 !
     now = time.monotonic()
-    if LEDPowerNbL > 0 or LEDPowerLInfinite == True : 
-        if GPIO.input(LEDPower) == False:
-            if now >= LEDPowerT + LEDPowerOFFT:
-                GPIO.output(LEDPower, 1)
-                LEDPowerT = now
-                LEDPowerNbL = LEDPowerNbL - 1
 
-        if GPIO.input(LEDPower) == True:
-            if now >= LEDPowerT + LEDPowerONT:
-                GPIO.output(LEDPower, 0)
-                LEDPowerT = now
-                LEDPowerNbL = LEDPowerNbL - 1
+    # ------------
+    # PLAY STATIC
+    # ------------
+    if LedState[c_State][ID_PLAY]["LedMode"] == STATIC :
+        out = LedState[c_State][ID_PLAY]["ONT"]
+        GPIO.output(LED_PLAY, out)
 
-# ---------------------------------------------
-# ---------------------------------------------
-def p_LEDPower_On():
-    GPIO.output(LEDPower, 1)
+    # ------------
+    # PLAY BLINK
+    # ------------
+    elif LedState[c_State][ID_PLAY]["LedMode"] == BLINK :
+        onT = LedState[c_State][ID_PLAY]["ONT"]
+        offT = LedState[c_State][ID_PLAY]["OFFT"]
 
-# ---------------------------------------------
-# ---------------------------------------------
-def p_LEDPower_Off():
-    GPIO.output(LEDPower, 0)
+        if  cnt_BlinkLedPlay < 2 * LedState[c_State][ID_PLAY]["NbL"] :
+
+            if GPIO.input(LED_PLAY) == False:
+                if now >= t_LPlay + offT:
+                    GPIO.output(LED_PLAY, 1)
+                    t_LPlay = now
+                    cnt_BlinkLedPlay =  cnt_BlinkLedPlay + 1 
+
+            if GPIO.input(LED_PLAY) == True:
+                if now >= t_LPlay + onT:
+                    GPIO.output(LED_PLAY, 0)
+                    t_LPlay = now
+                    cnt_BlinkLedPlay =  cnt_BlinkLedPlay + 1 
 
 
-# ---------------------------------------------
-# ---------------------------------------------
-def process_callback():
-    # make process here
-    print('something')
+
+    # ------------
+    # PLAY INFINITY
+    # ------------
+    elif LedState[c_State][ID_PLAY]["LedMode"] == INFINITY :
+        onT = LedState[c_State][ID_PLAY]["ONT"]
+        offT = LedState[c_State][ID_PLAY]["OFFT"]
+        if GPIO.input(LED_PLAY) == False:
+            if now >= t_LPlay + offT:
+                GPIO.output(LED_PLAY, 1)
+                t_LPlay = now
+
+        if GPIO.input(LED_PLAY) == True:
+            if now >= t_LPlay + onT:
+                GPIO.output(LED_PLAY, 0)
+                t_LPlay = now
+
+    else :
+        print("Here We got an ERROR in p_LED for ID_PLAY !")
+
+
+    # ------------
+    # POWER STATIC
+    # ------------
+    if LedState[c_State][ID_POWER]["LedMode"] == STATIC :
+        out = LedState[c_State][ID_POWER]["ONT"]
+        GPIO.output(LED_POWER, out)
+
+    # ------------
+    # POWER BLINK
+    # ------------
+    elif LedState[c_State][ID_POWER]["LedMode"] == BLINK :
+        onT = LedState[c_State][ID_POWER]["ONT"]
+        offT = LedState[c_State][ID_POWER]["OFFT"]
+
+        if  cnt_BlinkLedPower <= 2 * LedState[c_State][ID_POWER]["NbL"] :
+            if GPIO.input(LED_POWER) == False:
+                if now >= t_LPOWER + offT:
+                    GPIO.output(LED_POWER, 1)
+                    t_LPOWER = now
+                    cnt_BlinkLedPower =  ncnt_BlinkLedPower + 1 
+
+            if GPIO.input(LED_POWER) == True:
+                if now >= t_LPOWER + onT:
+                    GPIO.output(LED_POWER, 0)
+                    t_LPOWER = now
+                    cnt_BlinkLedPower =  ncnt_BlinkLedPower + 1 
+
+    # ------------
+    # POWER INFINITY
+    # ------------
+    elif LedState[c_State][ID_POWER]["LedMode"] == INFINITY :
+        onT = LedState[c_State][ID_POWER]["ONT"]
+        offT = LedState[c_State][ID_POWER]["OFFT"]
+        if GPIO.input(LED_POWER) == False:
+            if now >= t_LPOWER + offT:
+                GPIO.output(LED_POWER, 1)
+                t_LPOWER = now
+
+        if GPIO.input(LED_POWER) == True:
+            if now >= t_LPOWER + onT:
+                GPIO.output(LED_POWER, 0)
+                t_LPOWER = now
+
+    else :
+        print("Here We got an ERROR in p_LED for ID_POWER !")
+
 
 
 # ---------------------------------------------
 # ---------------------------------------------
 if __name__ == '__main__':
     # call init
+    
     init()
 
     try:
         # looping infinitely
         while True:
-            p_LEDPlay_On()
+
+            if c_Mode == MODE_AP :
+                LedState[c_State][ID_POWER]["LedMode"] = STATIC
+            else:
+                # c_Mode = MODE_CLIENT
+                LedState[c_State][ID_POWER]["LedMode"] = INFINITY
+
+
+            p_LED()
 
      # this block will run no matter how the try block exits
     except KeyboardInterrupt:
-        print("Interrupt")
         GPIO.cleanup()  # clean up after yourself
+
 
