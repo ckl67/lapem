@@ -10,6 +10,7 @@
 # ========================================================
 import time
 import RPi.GPIO as GPIO
+from common import *
 
 # ========================================================
 #                       Declarations
@@ -156,13 +157,13 @@ LedPause = [LedPlayPause, LedPowerPause]
 # -------------
 LedPlayBack = { 
         "LedMode"   : BLINK, 
-        "ONT"       : 0.1,
-        "OFFT"      : 0.1,
-        "NbL"       : 10
+        "ONT"       : 0.05,
+        "OFFT"      : 0.05,
+        "NbL"       : 5
         }
 
 LedPowerBack = {
-        "LedMode"   : STATIC, 
+        "LedMode"   : INFINITY, 
         "ONT"       : 1,
         "OFFT"      : 0,
         "NbL"       : 1
@@ -214,7 +215,6 @@ cnt_BlinkLedPower = 0
 #     All your initialization here
 # ---------------------------------------------
 def init():
-    #print(t_LPlay)
     
     # Input declaration Mode : BCM GPIO numbering
     GPIO.setmode(GPIO.BCM)
@@ -251,35 +251,36 @@ def but_callback(vbut):
     global cnt_BlinkLedPlay
     global cnt_BlinkLedPower
     
+    # Reinit Blink Counters
+    cnt_BlinkLedPower=0
+    cnt_BlinkLedPlay=0
+    
     if vbut == BUT_PLAY_PAUSE:
 
         # Reinit Button Back Counter, before to enter in the Specific Mode
         cnt_Bback=0  
-        
-        # Reinit Blink Counters
-        cnt_BlinkLedPower=0
-        cnt_BlinkLedPlay=0
 
         # Button Play or Pause
         if sw_PlayPause == 0:
             sw_PlayPause = 1
             c_State = STATE_PLAY
-            print("Button Play")
+            pDbg1("Button Play")
         else:
             sw_PlayPause = 0
             c_State = STATE_PAUSE
-            print("Button Pause")
+            pDbg1("Button Pause")
     else:
         #Button Back Pressed
         if cnt_Bback < BUTTON_BACK_THRESHOLD:
-            print("Button Back")
+            pDbg1("Button Back")
             c_State = STATE_BACK
             cnt_Bback=cnt_Bback+1  
         else:
-            print("Special Mode, and we stay in this Mode !!")
+            pDbg1("Special Mode, and we stay in this Mode !!")
             c_Mode = MODE_AP
 
 # ---------------------------------------------
+#  
 # ---------------------------------------------
 def p_LED():
 
@@ -289,6 +290,7 @@ def p_LED():
     
     global t_LPlay
     global t_LPower
+
     global cnt_BlinkLedPlay
     global cnt_BlinkLedPower
 
@@ -315,13 +317,15 @@ def p_LED():
                 if now >= t_LPlay + offT:
                     GPIO.output(LED_PLAY, 1)
                     t_LPlay = now
-                    cnt_BlinkLedPlay =  cnt_BlinkLedPlay + 1 
+                    cnt_BlinkLedPlay =  cnt_BlinkLedPlay + 1
+                    #pDbg1(cnt_BlinkLedPlay )
 
             if GPIO.input(LED_PLAY) == True:
                 if now >= t_LPlay + onT:
                     GPIO.output(LED_PLAY, 0)
                     t_LPlay = now
                     cnt_BlinkLedPlay =  cnt_BlinkLedPlay + 1 
+                    #pDbg1(cnt_BlinkLedPlay )
 
 
 
@@ -342,9 +346,11 @@ def p_LED():
                 t_LPlay = now
 
     else :
-        print("Here We got an ERROR in p_LED for ID_PLAY !")
+        pError("Here We got an ERROR in p_LED for ID_PLAY !")
 
 
+    pDbg1("(p_LED) Led Mode : {} ".format(LedState[c_State][ID_POWER]["LedMode"] ))
+    
     # ------------
     # POWER STATIC
     # ------------
@@ -361,16 +367,16 @@ def p_LED():
 
         if  cnt_BlinkLedPower <= 2 * LedState[c_State][ID_POWER]["NbL"] :
             if GPIO.input(LED_POWER) == False:
-                if now >= t_LPOWER + offT:
+                if now >= t_LPower + offT:
                     GPIO.output(LED_POWER, 1)
-                    t_LPOWER = now
-                    cnt_BlinkLedPower =  ncnt_BlinkLedPower + 1 
+                    t_LPower = now
+                    cnt_BlinkLedPower =  cnt_BlinkLedPower + 1 
 
             if GPIO.input(LED_POWER) == True:
-                if now >= t_LPOWER + onT:
+                if now >= t_LPower + onT:
                     GPIO.output(LED_POWER, 0)
-                    t_LPOWER = now
-                    cnt_BlinkLedPower =  ncnt_BlinkLedPower + 1 
+                    t_LPower = now
+                    cnt_BlinkLedPower =  cnt_BlinkLedPower + 1 
 
     # ------------
     # POWER INFINITY
@@ -379,17 +385,17 @@ def p_LED():
         onT = LedState[c_State][ID_POWER]["ONT"]
         offT = LedState[c_State][ID_POWER]["OFFT"]
         if GPIO.input(LED_POWER) == False:
-            if now >= t_LPOWER + offT:
+            if now >= t_LPower + offT:
                 GPIO.output(LED_POWER, 1)
-                t_LPOWER = now
+                t_LPower = now
 
         if GPIO.input(LED_POWER) == True:
-            if now >= t_LPOWER + onT:
+            if now >= t_LPower + onT:
                 GPIO.output(LED_POWER, 0)
-                t_LPOWER = now
+                t_LPower = now
 
     else :
-        print("Here We got an ERROR in p_LED for ID_POWER !")
+        pError("Here We got an ERROR in p_LED for ID_POWER !")
 
 
 
@@ -397,7 +403,10 @@ def p_LED():
 # ---------------------------------------------
 if __name__ == '__main__':
     # call init
-    
+
+    setApplicationDebugLevel(1)
+    pDbg1("test")
+
     init()
 
     try:
