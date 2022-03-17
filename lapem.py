@@ -8,9 +8,12 @@
 # ========================================================
 #                          Import
 # ========================================================
-import time
+
+from pygame import mixer # sudo apt-get install python3-pygame
+
+from time import sleep, monotonic
 import RPi.GPIO as GPIO
-from common import *
+from common import setApplicationDebugLevel, pError, pDbg0, pDbg1, pDbg2  
 
 # ========================================================
 #                       Declarations
@@ -64,10 +67,9 @@ LED_POWER = 17
 #   Usage : LedState[STATE_PLAY][ID_PLAY]["LedMode"]
 # --------------------------------
 
-STATE_NOTHING = 0
+STATE_STOP = 0
 STATE_PLAY = 1
 STATE_PAUSE = 2
-STATE_BACK = 3
 
 # --------------------------------
 #  Led Index
@@ -79,8 +81,10 @@ ID_POWER = 1
 
 # --------------------------------
 #  Led Mode
-#       For STATIC we will take the "ONT" status
-#       For BLINK we will LOOP : NbL times 
+#       For STATIC we will take the "ONT" status > 0 --> 1
+#           Take care to think to programm the Good value for Blink and Infinity 
+#       For BLINK we will Loop with the ONT & OFFT NbL times, and we will end with a 0
+#       For INFINITY we will Loop with the ONT & OFFT infinity   
 #
 #   Usage : LedState[STATE_PLAY][ID_PLAY]["LedMode"] = BLINK
 #
@@ -94,24 +98,24 @@ INFINITY = 2
 #                      Variables LED
 # ========================================================
 # -------------
-# Led Nothing
+# Led Stop
 # -------------
 
-LedPlayNothing = {
-        "LedMode"   : STATIC,
-        "ONT"       : 0,
-        "OFFT"      : 0,
-        "NbL"       : 1
+LedPlayStop = {
+        "LedMode"   : BLINK,
+        "ONT"       : 0.08,
+        "OFFT"      : 0.08,
+        "NbL"       : 4
         }
 
-LedPowerNothing = {
+LedPowerStop = {
         "LedMode"   : STATIC, 
-        "ONT"       : 1,
-        "OFFT"      : 0,
+        "ONT"       : 0.5,
+        "OFFT"      : 0.5,
         "NbL"       : 1
         }
 
-LedNothing = [LedPlayNothing, LedPowerNothing ] 
+LedStop = [LedPlayStop, LedPowerStop ] 
 
 # -------------
 # Led Play
@@ -126,8 +130,8 @@ LedPlayPlay = {
 
 LedPowerPlay = {
         "LedMode"   : STATIC, 
-        "ONT"       : 1,
-        "OFFT"      : 0,
+        "ONT"       : 0.5,
+        "OFFT"      : 0.5,
         "NbL"       : 1,
         }
 
@@ -145,31 +149,12 @@ LedPlayPause = {
 
 LedPowerPause = {
         "LedMode"   : STATIC, 
-        "ONT"       : 1,
-        "OFFT"      : 0,
+        "ONT"       : 0.5,
+        "OFFT"      : 0.5,
         "NbL"       : 1
         }
 
 LedPause = [LedPlayPause, LedPowerPause]
-
-# -------------
-# Led Back
-# -------------
-LedPlayBack = { 
-        "LedMode"   : BLINK, 
-        "ONT"       : 0.05,
-        "OFFT"      : 0.05,
-        "NbL"       : 5
-        }
-
-LedPowerBack = {
-        "LedMode"   : INFINITY, 
-        "ONT"       : 1,
-        "OFFT"      : 0,
-        "NbL"       : 1
-        }
-
-LedBack = [LedPlayBack, LedPowerBack]
 
 # --------------------------------
 # LED State
@@ -177,7 +162,7 @@ LedBack = [LedPlayBack, LedPowerBack]
 #           : c_State = STATE_PAUSE
 #           : if LedState[c_State][ID_PLAY]["LedMode"] == BLINK
 # --------------------------------
-LedState = [ LedNothing, LedPlay, LedPause, LedBack] 
+LedState = [ LedStop, LedPlay, LedPause] 
 
 # ========================================================
 #                       Variables
@@ -199,7 +184,7 @@ t_LPlay = -1
 c_Mode = MODE_AP
 
 # Current Lapem Led State
-c_State = STATE_NOTHING
+c_State = STATE_STOP
 
 # Blink Counter for Led Play
 cnt_BlinkLedPlay = 0
@@ -232,14 +217,22 @@ def init():
     GPIO.setup(BUT_BACK, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
     # Add an interrupt on pin on rising edge
-    GPIO.add_event_detect(BUT_PLAY_PAUSE, GPIO.RISING, callback=but_callback, bouncetime=300)
-    GPIO.add_event_detect(BUT_BACK, GPIO.RISING, callback=but_callback, bouncetime=300)
+    GPIO.add_event_detect(BUT_PLAY_PAUSE, GPIO.RISING, callback=state_machine, bouncetime=300)
+    GPIO.add_event_detect(BUT_BACK, GPIO.RISING, callback=state_machine, bouncetime=300)
+
+    mixer.init() #Initialzing pyamge mixer
+
+    #Loading Music File
+    mixer.music.load('/home/pi/lapem/music/audio.mp3') 
+    mixer.music.play()  #Playing Music with Pygame
+    mixer.music.pause() #pausing music file
 
 # ---------------------------------------------
-# Button Callback fucntion
+# Button Callback function
 #    function which call when a signal rising edge on pin
+#    This will set the current state and current mode
 # ---------------------------------------------
-def but_callback(vbut):
+def state_machine(vbut):
 
     global BUTTON_BACK_THRESHOLD  
 
@@ -264,20 +257,31 @@ def but_callback(vbut):
         if sw_PlayPause == 0:
             sw_PlayPause = 1
             c_State = STATE_PLAY
-            pDbg1("Button Play")
+            pDbg1("State Play")
+            mixer.music.unpause() #unpausing music file
+
         else:
             sw_PlayPause = 0
             c_State = STATE_PAUSE
-            pDbg1("Button Pause")
-    else:
-        #Button Back Pressed
+            pDbg1("State Pause")
+            mixer.music.pause() #pausing music file
+
+    else: #Button Back Pressed
+        # Force Button Play/Pause as Pause
+        sw_PlayPause = 0
+
         if cnt_Bback < BUTTON_BACK_THRESHOLD:
-            pDbg1("Button Back")
-            c_State = STATE_BACK
+            pDbg1("State Stop")
+            c_State = STATE_STOP
+            mixer.music.stop()
+            mixer.music.load('/home/pi/lapem/music/audio.mp3') 
+            mixer.music.play()  #Playing Music with Pygame
+            mixer.music.pause() #pausing music file
+
             cnt_Bback=cnt_Bback+1  
         else:
             pDbg1("Special Mode, and we stay in this Mode !!")
-            c_Mode = MODE_AP
+            c_Mode = MODE_CLIENT
 
 # ---------------------------------------------
 #  
@@ -295,15 +299,18 @@ def p_LED():
     global cnt_BlinkLedPower
 
     # monotonic only available in Python3 !
-    now = time.monotonic()
+    now = monotonic()
 
     # ------------
     # PLAY STATIC
     # ------------
     if LedState[c_State][ID_PLAY]["LedMode"] == STATIC :
         out = LedState[c_State][ID_PLAY]["ONT"]
-        GPIO.output(LED_PLAY, out)
-
+        if out > 0 :
+            GPIO.output(LED_PLAY, 1)
+        else:
+            GPIO.output(LED_PLAY, 0)
+        
     # ------------
     # PLAY BLINK
     # ------------
@@ -326,8 +333,8 @@ def p_LED():
                     t_LPlay = now
                     cnt_BlinkLedPlay =  cnt_BlinkLedPlay + 1 
                     #pDbg1(cnt_BlinkLedPlay )
-
-
+        else : # For BLINK, we will stop with LED Turn Off
+            GPIO.output(LED_PLAY, 0)
 
     # ------------
     # PLAY INFINITY
@@ -347,16 +354,18 @@ def p_LED():
 
     else :
         pError("Here We got an ERROR in p_LED for ID_PLAY !")
-
-
-    pDbg1("(p_LED) Led Mode : {} ".format(LedState[c_State][ID_POWER]["LedMode"] ))
-    
+        pError("(p_LED) c_State= {}".format(c_State))
+        pError("(p_LED) Led State= {}".format(LedState[c_State][ID_PLAY]["LedMode"]))
+        
     # ------------
     # POWER STATIC
     # ------------
     if LedState[c_State][ID_POWER]["LedMode"] == STATIC :
         out = LedState[c_State][ID_POWER]["ONT"]
-        GPIO.output(LED_POWER, out)
+        if out > 0 :
+            GPIO.output(LED_POWER, 1)
+        else:
+            GPIO.output(LED_POWER, 0)
 
     # ------------
     # POWER BLINK
@@ -378,6 +387,9 @@ def p_LED():
                     t_LPower = now
                     cnt_BlinkLedPower =  cnt_BlinkLedPower + 1 
 
+        else : # For BLINK, we will stop with LED Turn Off
+            GPIO.output(LED_POWER, 0)
+
     # ------------
     # POWER INFINITY
     # ------------
@@ -396,17 +408,16 @@ def p_LED():
 
     else :
         pError("Here We got an ERROR in p_LED for ID_POWER !")
-
-
+        pError("(p_LED) c_State= {}".format(c_State))
+        pError("(p_LED) Led State= {}".format(LedState[c_State][ID_POWER]["LedMode"]))
 
 # ---------------------------------------------
 # ---------------------------------------------
 if __name__ == '__main__':
     # call init
 
-    setApplicationDebugLevel(1)
-    pDbg1("test")
-
+    setApplicationDebugLevel(2)
+ 
     init()
 
     try:
@@ -418,9 +429,10 @@ if __name__ == '__main__':
             else:
                 # c_Mode = MODE_CLIENT
                 LedState[c_State][ID_POWER]["LedMode"] = INFINITY
-
-
+            
             p_LED()
+
+        sleep(0.1)
 
      # this block will run no matter how the try block exits
     except KeyboardInterrupt:
