@@ -3,17 +3,24 @@
 # Author : Christian Klugesherz
 #          christian.klugesherz@gmail.com
 # Mars 2022
+#
+#   To run at the start : /etc/rc.local 
+#   add before exit 0
+#       /usr/bin/python3 /home/pi/lapem/lapem.py &
 # ========================================================
 
 # ========================================================
 #                          Import
 # ========================================================
 
-from pygame import mixer # sudo apt-get install python3-pygame
-
 from time import sleep, monotonic
-import RPi.GPIO as GPIO
 from common import setApplicationDebugLevel, pError, pDbg0, pDbg1, pDbg2  
+
+import RPi.GPIO as GPIO
+import subprocess
+import socket
+
+from pygame import mixer # sudo apt-get install python3-pygame
 
 # ========================================================
 #                       Declarations
@@ -27,6 +34,12 @@ from common import setApplicationDebugLevel, pError, pDbg0, pDbg1, pDbg2
 
 MODE_AP = 0
 MODE_CLIENT = 1
+
+# --------------------------------
+# Will check every 10 seconds the Mode Status
+# --------------------------------
+
+LOOP_MODE_TIME = 10
 
 # --------------------------------
 # Button
@@ -167,6 +180,8 @@ LedState = [ LedStop, LedPlay, LedPause]
 # ========================================================
 #                       Variables
 # ========================================================
+# General Timer
+now = 0
 
 # Swicht between Play and Pause
 sw_PlayPause = 0
@@ -183,6 +198,9 @@ t_LPlay = -1
 # Current Lapem Mode
 c_Mode = MODE_AP
 
+# Timer Mode
+t_Mode = 0
+
 # Current Lapem Led State
 c_State = STATE_STOP
 
@@ -192,6 +210,8 @@ cnt_BlinkLedPlay = 0
 # Blink Counter for Led Power
 cnt_BlinkLedPower = 0
 
+# Audio level
+v_audio_level = 0.05
 # ========================================================
 #                         Functions
 # ========================================================
@@ -224,6 +244,7 @@ def init():
 
     #Loading Music File
     mixer.music.load('/home/pi/lapem/music/audio.mp3') 
+    mixer.music.set_volume(v_audio_level)
     mixer.music.play()  #Playing Music with Pygame
     mixer.music.pause() #pausing music file
 
@@ -243,7 +264,9 @@ def state_machine(vbut):
 
     global cnt_BlinkLedPlay
     global cnt_BlinkLedPower
-    
+
+    global v_audio_level
+
     # Reinit Blink Counters
     cnt_BlinkLedPower=0
     cnt_BlinkLedPlay=0
@@ -275,13 +298,63 @@ def state_machine(vbut):
             c_State = STATE_STOP
             mixer.music.stop()
             mixer.music.load('/home/pi/lapem/music/audio.mp3') 
+            mixer.music.set_volume(v_audio_level)
             mixer.music.play()  #Playing Music with Pygame
             mixer.music.pause() #pausing music file
 
             cnt_Bback=cnt_Bback+1  
         else:
-            pDbg1("Special Mode, and we stay in this Mode !!")
+
+            # -------------------------------------------------------------------------------
+            # AP → Client : Dynamique et définitive
+            # -------------------------------------------------------------------------------
+            # bash sap2cl.sh
+            # subprocess.run(["echo", "bash sap2cl.sh"])
+            # subprocess.run(["bash", "sap2cl.sh"])
+
+            # -------------------------------------------------------------------------------
+            # AP → Client : Bascule en mode client mais au prochain démarrage on sera en AP 
+            # -------------------------------------------------------------------------------
+            # bash sap2clnsap.sh
+            # subprocess.run(["echo", "bash sap2clnsap.sh"])
+            # subprocess.run(["bash", "sap2clnsap.sh"])
+            
+            subprocess.run(["echo", "bash sap2clnsap.sh"])
+            subprocess.run(["bash", "sap2clnsap.sh"])
+
+
+
+# ---------------------------------------------
+#  Check Mode change every 10 secondes
+# ---------------------------------------------
+def p_Mode():
+    global t_Mode
+    global c_Mode
+
+    if now >= t_Mode + LOOP_MODE_TIME:
+
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8",80))
+        ip_address = s.getsockname()[0]
+        pDbg2("IP Address = {}".format(ip_address))
+        s.close()
+
+        if ip_address == "10.1.143.1":
+            c_Mode = MODE_AP
+        else:
             c_Mode = MODE_CLIENT
+
+        t_Mode = now
+        
+        if c_Mode == MODE_AP :
+            LedState[c_State][ID_POWER]["LedMode"] = STATIC
+            pDbg1("AP Mode, and we stay in this Mode !!")
+
+        else:
+            # c_Mode = MODE_CLIENT
+            LedState[c_State][ID_POWER]["LedMode"] = INFINITY
+            pDbg1("Special Mode, and we stay in this Mode !!")
+
 
 # ---------------------------------------------
 #  
@@ -297,9 +370,6 @@ def p_LED():
 
     global cnt_BlinkLedPlay
     global cnt_BlinkLedPower
-
-    # monotonic only available in Python3 !
-    now = monotonic()
 
     # ------------
     # PLAY STATIC
@@ -424,15 +494,14 @@ if __name__ == '__main__':
         # looping infinitely
         while True:
 
-            if c_Mode == MODE_AP :
-                LedState[c_State][ID_POWER]["LedMode"] = STATIC
-            else:
-                # c_Mode = MODE_CLIENT
-                LedState[c_State][ID_POWER]["LedMode"] = INFINITY
-            
+            # monotonic only available in Python3 !
+            now = monotonic()
+
+            p_Mode()
+
             p_LED()
 
-        sleep(0.1)
+            sleep(0.1)
 
      # this block will run no matter how the try block exits
     except KeyboardInterrupt:
