@@ -1,0 +1,23 @@
+## Create a service 
+## run as a service and it start in reboot automatically.
+##
+## sudo cp lapem.service /etc/systemd/system/lapem.service
+## sudo systemctl daemon-reload
+##
+## Start a Reboot
+## sudo systemctl enable lapem.service
+##
+## sudo systemctl start lapem.service
+## sudo systemctl stop lapem.service
+## sudo systemctl status lapem -l
+
+[Unit]
+Description=lapem service
+
+[Service]
+TimeoutStartSec=0
+#ExecStart=/bin/bash -c '/usr/bin/python3 /home/pi/lapem/lapem.py > /home/pi/lapem/lapem.log 2>&1'
+ExecStart=/bin/bash -c '/usr/bin/python3 /home/pi/lapem/lapem.py > /home/pi/lapem/lapem.log'
+
+[Install]
+WantedBy=multi-user.target
