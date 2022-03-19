@@ -1,11 +1,13 @@
 #!/bin/bash
 # This script will stop Hotspot (AP+DHCP) and will Switch your Raspberry to a WIFI Client (Temporarily) 
 # Effect is dynamic --> Next start will be as AP
+# SO we will Reboot
 # Run : bash sap2clnsap.sh
 
 echo "========================================"
 echo " Switch from Hotspot (AP+DHP) to Client "
 echo "  Next start will be : AP mode "
+echo "  We will Reboot Too "
 echo "========================================"
 echo " "
 echo "Stopping hostapd, dnsmasq "
@@ -27,6 +29,9 @@ sudo systemctl unmask hostapd
 sudo systemctl enable hostapd
 sudo systemctl enable dnsmasq.service
 sudo cp  /etc/dhcpcd-static.conf /etc/dhcpcd.conf
+
+sleep 2
+sudo reboot
 
 echo "Done."
 exit

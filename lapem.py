@@ -4,7 +4,7 @@
 #          christian.klugesherz@gmail.com
 # Mars 2022
 #
-#   To run at the start : /etc/rc.local 
+#   To run at the start : /etc/rc.local
 #   add before exit 0
 #       /usr/bin/python3 /home/pi/lapem/lapem.py &
 # ========================================================
@@ -14,11 +14,12 @@
 # ========================================================
 
 from time import sleep, monotonic
-from common import setApplicationDebugLevel, pError, pDbg0, pDbg1, pDbg2  
+from common import setApplicationDebugLevel, pError, pDbg0, pDbg1, pDbg2
 
 import RPi.GPIO as GPIO
 import subprocess
-import socket
+import os
+import json
 
 from pygame import mixer # sudo apt-get install python3-pygame
 
@@ -27,7 +28,7 @@ from pygame import mixer # sudo apt-get install python3-pygame
 # ========================================================
 
 # --------------------------------
-# Lapem Mode 
+# Lapem Mode
 #   MODE_AP     : Access Point
 #   MODE_CLIENT : Wifi Client
 # --------------------------------
@@ -95,9 +96,9 @@ ID_POWER = 1
 # --------------------------------
 #  Led Mode
 #       For STATIC we will take the "ONT" status > 0 --> 1
-#           Take care to think to programm the Good value for Blink and Infinity 
+#           Take care to think to programm the Good value for Blink and Infinity
 #       For BLINK we will Loop with the ONT & OFFT NbL times, and we will end with a 0
-#       For INFINITY we will Loop with the ONT & OFFT infinity   
+#       For INFINITY we will Loop with the ONT & OFFT infinity
 #
 #   Usage : LedState[STATE_PLAY][ID_PLAY]["LedMode"] = BLINK
 #
@@ -122,27 +123,27 @@ LedPlayStop = {
         }
 
 LedPowerStop = {
-        "LedMode"   : STATIC, 
+        "LedMode"   : STATIC,
         "ONT"       : 0.5,
         "OFFT"      : 0.5,
         "NbL"       : 1
         }
 
-LedStop = [LedPlayStop, LedPowerStop ] 
+LedStop = [LedPlayStop, LedPowerStop ]
 
 # -------------
 # Led Play
 # -------------
 
-LedPlayPlay = { 
-        "LedMode"   : STATIC, 
+LedPlayPlay = {
+        "LedMode"   : STATIC,
         "ONT"       : 1,
         "OFFT"      : 0,
         "NbL"       : 1,
         }
 
 LedPowerPlay = {
-        "LedMode"   : STATIC, 
+        "LedMode"   : STATIC,
         "ONT"       : 0.5,
         "OFFT"      : 0.5,
         "NbL"       : 1,
@@ -153,15 +154,15 @@ LedPlay = [LedPlayPlay, LedPowerPlay]
 # -------------
 # Led Pause
 # -------------
-LedPlayPause = { 
-        "LedMode"   : STATIC, 
+LedPlayPause = {
+        "LedMode"   : STATIC,
         "ONT"       : 0,
         "OFFT"      : 0,
         "NbL"       : 1
         }
 
 LedPowerPause = {
-        "LedMode"   : STATIC, 
+        "LedMode"   : STATIC,
         "ONT"       : 0.5,
         "OFFT"      : 0.5,
         "NbL"       : 1
@@ -171,11 +172,11 @@ LedPause = [LedPlayPause, LedPowerPause]
 
 # --------------------------------
 # LED State
-#   Usage :  
+#   Usage :
 #           : c_State = STATE_PAUSE
 #           : if LedState[c_State][ID_PLAY]["LedMode"] == BLINK
 # --------------------------------
-LedState = [ LedStop, LedPlay, LedPause] 
+LedState = [ LedStop, LedPlay, LedPause]
 
 # ========================================================
 #                       Variables
@@ -220,7 +221,7 @@ v_audio_level = 0.05
 #     All your initialization here
 # ---------------------------------------------
 def init():
-    
+
     # Input declaration Mode : BCM GPIO numbering
     GPIO.setmode(GPIO.BCM)
 
@@ -243,7 +244,7 @@ def init():
     mixer.init() #Initialzing pyamge mixer
 
     #Loading Music File
-    mixer.music.load('/home/pi/lapem/music/audio.mp3') 
+    mixer.music.load('/home/pi/lapem/music/audio.mp3')
     mixer.music.set_volume(v_audio_level)
     mixer.music.play()  #Playing Music with Pygame
     mixer.music.pause() #pausing music file
@@ -255,10 +256,8 @@ def init():
 # ---------------------------------------------
 def state_machine(vbut):
 
-    global BUTTON_BACK_THRESHOLD  
-
     global cnt_Bback
-    global c_State 
+    global c_State
     global c_Mode
     global sw_PlayPause
 
@@ -270,11 +269,11 @@ def state_machine(vbut):
     # Reinit Blink Counters
     cnt_BlinkLedPower=0
     cnt_BlinkLedPlay=0
-    
+
     if vbut == BUT_PLAY_PAUSE:
 
         # Reinit Button Back Counter, before to enter in the Specific Mode
-        cnt_Bback=0  
+        cnt_Bback=0
 
         # Button Play or Pause
         if sw_PlayPause == 0:
@@ -294,35 +293,39 @@ def state_machine(vbut):
         sw_PlayPause = 0
 
         if cnt_Bback < BUTTON_BACK_THRESHOLD:
-            pDbg1("State Stop")
+            pDbg1("State Stop (cnt_Bback={})".format(cnt_Bback))
             c_State = STATE_STOP
             mixer.music.stop()
-            mixer.music.load('/home/pi/lapem/music/audio.mp3') 
+            mixer.music.load('/home/pi/lapem/music/audio.mp3')
             mixer.music.set_volume(v_audio_level)
             mixer.music.play()  #Playing Music with Pygame
             mixer.music.pause() #pausing music file
 
             cnt_Bback=cnt_Bback+1  
         else:
-
             # -------------------------------------------------------------------------------
             # AP → Client : Dynamique et définitive
             # -------------------------------------------------------------------------------
             # bash sap2cl.sh
             # subprocess.run(["echo", "bash sap2cl.sh"])
             # subprocess.run(["bash", "sap2cl.sh"])
-
             # -------------------------------------------------------------------------------
-            # AP → Client : Bascule en mode client mais au prochain démarrage on sera en AP 
+            # AP → Client : Bascule en mode client mais au prochain démarrage on sera en AP
             # -------------------------------------------------------------------------------
             # bash sap2clnsap.sh
             # subprocess.run(["echo", "bash sap2clnsap.sh"])
             # subprocess.run(["bash", "sap2clnsap.sh"])
-            
-            subprocess.run(["echo", "bash sap2clnsap.sh"])
-            subprocess.run(["bash", "sap2clnsap.sh"])
 
-
+            if c_Mode == MODE_AP:
+                GPIO.output(LED_PLAY, 0)
+                GPIO.output(LED_POWER, 0)
+                pDbg1("AP → Client + Reboot ")
+                subprocess.run(["bash", "sap2cl.sh"])
+            else:
+                GPIO.output(LED_PLAY, 0)
+                GPIO.output(LED_POWER, 0)
+                pDbg1("Client → AP + Reboot ")
+                subprocess.run(["bash", "scl2ap.sh"])
 
 # ---------------------------------------------
 #  Check Mode change every 10 secondes
@@ -331,40 +334,43 @@ def p_Mode():
     global t_Mode
     global c_Mode
 
+    ip_address = ""
+
     if now >= t_Mode + LOOP_MODE_TIME:
 
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8",80))
-        ip_address = s.getsockname()[0]
-        pDbg2("IP Address = {}".format(ip_address))
-        s.close()
+        t_Mode = now
 
-        if ip_address == "10.1.143.1":
+        # Get IP Address of wan0
+        routes = json.loads(os.popen("ip -j -4 route").read())
+        for r in routes:
+            if r.get("dev") == "wlan0" and r.get("prefsrc"):
+                ip_address = r["prefsrc"] 
+                continue
+        pDbg2("IP: {}".format(ip_address))
+
+        if ip_address == "10.3.141.1":
             c_Mode = MODE_AP
         else:
             c_Mode = MODE_CLIENT
 
-        t_Mode = now
-        
         if c_Mode == MODE_AP :
             LedState[c_State][ID_POWER]["LedMode"] = STATIC
-            pDbg1("AP Mode, and we stay in this Mode !!")
+            pDbg1("AP Mode : IP = {}".format(ip_address))
 
         else:
             # c_Mode = MODE_CLIENT
             LedState[c_State][ID_POWER]["LedMode"] = INFINITY
-            pDbg1("Special Mode, and we stay in this Mode !!")
-
+            pDbg1("Client Mode : IP = {}".format(ip_address))
 
 # ---------------------------------------------
-#  
+#
 # ---------------------------------------------
 def p_LED():
 
     # Clarifications
-    # If you set a value of a variable inside the function, python understands it as creating a local variable with that name. 
+    # If you set a value of a variable inside the function, python understands it as creating a local variable with that name.
     # This local variable masks the global variable.
-    
+
     global t_LPlay
     global t_LPower
 
@@ -380,7 +386,7 @@ def p_LED():
             GPIO.output(LED_PLAY, 1)
         else:
             GPIO.output(LED_PLAY, 0)
-        
+
     # ------------
     # PLAY BLINK
     # ------------
@@ -401,7 +407,7 @@ def p_LED():
                 if now >= t_LPlay + onT:
                     GPIO.output(LED_PLAY, 0)
                     t_LPlay = now
-                    cnt_BlinkLedPlay =  cnt_BlinkLedPlay + 1 
+                    cnt_BlinkLedPlay =  cnt_BlinkLedPlay + 1
                     #pDbg1(cnt_BlinkLedPlay )
         else : # For BLINK, we will stop with LED Turn Off
             GPIO.output(LED_PLAY, 0)
@@ -426,7 +432,7 @@ def p_LED():
         pError("Here We got an ERROR in p_LED for ID_PLAY !")
         pError("(p_LED) c_State= {}".format(c_State))
         pError("(p_LED) Led State= {}".format(LedState[c_State][ID_PLAY]["LedMode"]))
-        
+
     # ------------
     # POWER STATIC
     # ------------
@@ -449,13 +455,13 @@ def p_LED():
                 if now >= t_LPower + offT:
                     GPIO.output(LED_POWER, 1)
                     t_LPower = now
-                    cnt_BlinkLedPower =  cnt_BlinkLedPower + 1 
+                    cnt_BlinkLedPower =  cnt_BlinkLedPower + 1
 
             if GPIO.input(LED_POWER) == True:
                 if now >= t_LPower + onT:
                     GPIO.output(LED_POWER, 0)
                     t_LPower = now
-                    cnt_BlinkLedPower =  cnt_BlinkLedPower + 1 
+                    cnt_BlinkLedPower =  cnt_BlinkLedPower + 1
 
         else : # For BLINK, we will stop with LED Turn Off
             GPIO.output(LED_POWER, 0)
@@ -487,7 +493,7 @@ if __name__ == '__main__':
     # call init
 
     setApplicationDebugLevel(2)
- 
+
     init()
 
     try:

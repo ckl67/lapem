@@ -26,5 +26,8 @@ sudo systemctl unmask hostapd
 sudo systemctl enable hostapd
 sudo systemctl enable dnsmasq.service
 
+sleep 2
+sudo reboot
+
 echo "Done."
 exit
