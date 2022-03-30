@@ -1,3 +1,5 @@
 music/*.mp3
+music/*.wav
+
 *.log
 __pycache__ 

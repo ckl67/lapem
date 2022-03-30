@@ -28,6 +28,11 @@ from pygame import mixer # sudo apt-get install python3-pygame
 # ========================================================
 
 # --------------------------------
+# DEBUG_LEVEL
+# --------------------------------
+DEBUG_LEVEL = 0
+
+# --------------------------------
 # Lapem Mode
 #   MODE_AP     : Access Point
 #   MODE_CLIENT : Wifi Client
@@ -37,10 +42,10 @@ MODE_AP = 0
 MODE_CLIENT = 1
 
 # --------------------------------
-# Will check every 10 seconds the Mode Status
+# Will check every 20 seconds the Mode Status
 # --------------------------------
 
-LOOP_MODE_TIME = 10
+LOOP_MODE_TIME = 20
 
 # --------------------------------
 # Button
@@ -187,9 +192,6 @@ now = 0
 # Swicht between Play and Pause
 sw_PlayPause = 0
 
-# Button Back Counter before to enter in a Specific Mode
-cnt_Bback = 0
-
 # Led Power timer
 t_LPower = -1
 
@@ -212,7 +214,7 @@ cnt_BlinkLedPlay = 0
 cnt_BlinkLedPower = 0
 
 # Audio level
-v_audio_level = 0.05
+v_audio_level = 1
 # ========================================================
 #                         Functions
 # ========================================================
@@ -241,13 +243,54 @@ def init():
     GPIO.add_event_detect(BUT_PLAY_PAUSE, GPIO.RISING, callback=state_machine, bouncetime=300)
     GPIO.add_event_detect(BUT_BACK, GPIO.RISING, callback=state_machine, bouncetime=300)
 
+    # Read Audio level
+    read_volume()
+
+    exit()
+
     mixer.init() #Initialzing pyamge mixer
 
     #Loading Music File
-    mixer.music.load('/home/pi/lapem/music/audio.mp3')
+    mixer.music.load('/home/pi/lapem/music/audio.wav')
     mixer.music.set_volume(v_audio_level)
     mixer.music.play()  #Playing Music with Pygame
     mixer.music.pause() #pausing music file
+
+# ---------------------------------------------
+# Read Volume in file : volume.txt
+# ---------------------------------------------
+def read_volume():
+    string1 = 'Volume'
+  
+    # opening a text file
+    file1 = open("volume.txt", "r")
+  
+    # setting flag and index to 0
+    flag = 0
+
+    # Loop through the file line by line
+    for line in file1:    
+        # checking string is present in line or not
+        if string1 in line:
+            flag = 1
+            break 
+          
+    # checking condition for string found or not
+    if flag == 0: 
+        pError('String', string1 , 'Not Found') 
+    else: 
+        #pDbg0("Line : {}".format(line))
+        res = ""
+
+        for possibility in line.split():
+            try:
+                res = str(float(possibility.replace(',', '.')))
+            except ValueError:
+                pass
+        print(res)
+        
+    # closing text file    
+    file1.close() 
 
 # ---------------------------------------------
 # Button Callback function
@@ -256,7 +299,6 @@ def init():
 # ---------------------------------------------
 def state_machine(vbut):
 
-    global cnt_Bback
     global c_State
     global c_Mode
     global sw_PlayPause
@@ -271,9 +313,6 @@ def state_machine(vbut):
     cnt_BlinkLedPlay=0
 
     if vbut == BUT_PLAY_PAUSE:
-
-        # Reinit Button Back Counter, before to enter in the Specific Mode
-        cnt_Bback=0
 
         # Button Play or Pause
         if sw_PlayPause == 0:
@@ -292,40 +331,13 @@ def state_machine(vbut):
         # Force Button Play/Pause as Pause
         sw_PlayPause = 0
 
-        if cnt_Bback < BUTTON_BACK_THRESHOLD:
-            pDbg1("State Stop (cnt_Bback={})".format(cnt_Bback))
-            c_State = STATE_STOP
-            mixer.music.stop()
-            mixer.music.load('/home/pi/lapem/music/audio.mp3')
-            mixer.music.set_volume(v_audio_level)
-            mixer.music.play()  #Playing Music with Pygame
-            mixer.music.pause() #pausing music file
-
-            cnt_Bback=cnt_Bback+1  
-        else:
-            # -------------------------------------------------------------------------------
-            # AP → Client : Dynamique et définitive
-            # -------------------------------------------------------------------------------
-            # bash sap2cl.sh
-            # subprocess.run(["echo", "bash sap2cl.sh"])
-            # subprocess.run(["bash", "sap2cl.sh"])
-            # -------------------------------------------------------------------------------
-            # AP → Client : Bascule en mode client mais au prochain démarrage on sera en AP
-            # -------------------------------------------------------------------------------
-            # bash sap2clnsap.sh
-            # subprocess.run(["echo", "bash sap2clnsap.sh"])
-            # subprocess.run(["bash", "sap2clnsap.sh"])
-
-            if c_Mode == MODE_AP:
-                GPIO.output(LED_PLAY, 0)
-                GPIO.output(LED_POWER, 0)
-                pDbg1("AP → Client + Reboot ")
-                subprocess.run(["bash", "sap2cl.sh"])
-            else:
-                GPIO.output(LED_PLAY, 0)
-                GPIO.output(LED_POWER, 0)
-                pDbg1("Client → AP + Reboot ")
-                subprocess.run(["bash", "scl2ap.sh"])
+        pDbg1("State Stop")
+        c_State = STATE_STOP
+        mixer.music.stop()
+        mixer.music.load('/home/pi/lapem/music/audio.wav')
+        mixer.music.set_volume(v_audio_level)
+        mixer.music.play()  #Playing Music with Pygame
+        mixer.music.pause() #pausing music file
 
 # ---------------------------------------------
 #  Check Mode change every 10 secondes
@@ -492,7 +504,7 @@ def p_LED():
 if __name__ == '__main__':
     # call init
 
-    setApplicationDebugLevel(2)
+    setApplicationDebugLevel(DEBUG_LEVEL )
 
     init()
 

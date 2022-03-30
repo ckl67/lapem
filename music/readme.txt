@@ -1,1 +1,1 @@
-Lit uniquement le fichier audio.mp3
+Lit uniquement le fichier audio.wav

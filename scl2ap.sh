@@ -4,7 +4,7 @@
 
 echo "========================================="
 echo " Switch from Client to Hotspot (AP+DHP)  "
-echo " THIS IS NOT DYNAMIC, AND NEEDS A REBOOT "
+echo " THIS WILL ALSO REBOOT "
 echo "========================================="
 echo " "
 echo "Start hostapd, dnsmasq"
