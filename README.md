@@ -1,6 +1,6 @@
 # Lapem
 Lecteur Audio Pour Ecole Maternelle
-La documentation se trouve dans le répertoire documents : "principle.md"
+La documentation se trouve sur le [Wiki](https://github.com/ckl67/lapem/wiki)
 
 # Mode de connexion
    
@@ -34,14 +34,19 @@ Pensez à tuer le process qui tourne en tâches de fond
     
 # Principe
 
-Lapem va jouer le fichier : "audio.wav".
-Si nécessaire vous pouvez utilez le programme "Audacity" pour convertir les fichiers audio en  fichier ".vaw"
+Lapem va jouer les fichiers : "audio.mp3" ou "audio.wav".
+
+Une fois connecté sur le lecteur réseau duLapem, cette connexion va vous permettre 
+*  de copier des fichiers musique .mp3 ou .wav et de les renommer.
+      Lapem va jouer de préférence le fichier "audio.mp3".
+      Si ce fichier n'existe pas, Lapem va jouer le fichier "audio.wav"
+      Si nécessaire vous pouvez utilez le programme "Audacity" pour  
+      convertir les fichiers ".mp3" en  fichier ".wav"
+
+*  d'ajuster le volume de lecture à travers le fichier volume.cfg
 
 l'accès au Lapem se fait à travers connexion ssh ou samba
 
     login : pi
     password: raspberry
 
-Cette connexion va vous permettre 
-* de copier des fichiers musique et de renommer le fichier transféré en "audio.wav"
-* d'ajuster le volume de lecture à travers le fichier volume.cfg

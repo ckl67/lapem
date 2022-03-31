@@ -7,6 +7,11 @@
 #   To run at the start : /etc/rc.local
 #   add before exit 0
 #       /usr/bin/python3 /home/pi/lapem/lapem.py &
+#
+#   Before to code, check that no process is running !
+#   ps -ef | grep lapem
+#   if there should be, kill it
+#   sudo kill -9 [process]
 # ========================================================
 
 # ========================================================
@@ -247,7 +252,13 @@ def init():
     mixer.init() #Initialzing pyamge mixer
 
     #Loading Music File
-    mixer.music.load('/home/pi/lapem/music/audio.wav')
+    path = '/home/pi/lapem/music/audio.mp3'
+    # Verify
+    if os.path.isfile(path) :
+        mixer.music.load('/home/pi/lapem/music/audio.mp3')
+    else:
+        mixer.music.load('/home/pi/lapem/music/audio.wav')
+    
     v_audio_level = read_volume()
     mixer.music.set_volume(v_audio_level)
     mixer.music.play()  #Playing Music with Pygame
@@ -332,7 +343,17 @@ def state_machine(vbut):
         pDbg1("State Stop")
         c_State = STATE_STOP
         mixer.music.stop()
-        mixer.music.load('/home/pi/lapem/music/audio.wav')
+
+        #Loading Music File
+        path = '/home/pi/lapem/music/audio.mp3'
+        # Verify
+        if os.path.isfile(path) :
+            mixer.music.load('/home/pi/lapem/music/audio.mp3')
+            print("ok")
+        else:
+            mixer.music.load('/home/pi/lapem/music/audio.wav')
+            print("nok")
+
         v_audio_level = read_volume()
         mixer.music.set_volume(v_audio_level)
         mixer.music.play()  #Playing Music with Pygame
@@ -503,7 +524,7 @@ def p_LED():
 if __name__ == '__main__':
     # call init
 
-    setApplicationDebugLevel(DEBUG_LEVEL )
+    setApplicationDebugLevel(DEBUG_LEVEL)
 
     init()
 

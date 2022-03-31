@@ -16,6 +16,20 @@
    sodipodi:docname="lapem-back.svg">
   <defs
      id="defs2">
+    <marker
+       style="overflow:visible;"
+       id="Arrow2Lend"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(1.1) rotate(180) translate(1,0)"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round;stroke:#d30000;stroke-opacity:1;fill:#ff8080;fill-opacity:1"
+         id="path1114" />
+    </marker>
     <rect
        x="25.342129"
        y="5.4454162"
@@ -31,8 +45,8 @@
     <rect
        x="48.880115"
        y="42.23242"
-       width="86.808014"
-       height="32.837841"
+       width="160.61869"
+       height="26.78043"
        id="rect962" />
     <rect
        x="38.713051"
@@ -139,8 +153,8 @@
     <rect
        x="48.880116"
        y="42.232422"
-       width="115.45649"
-       height="30.8862"
+       width="96.711579"
+       height="31.847477"
        id="rect962-2" />
     <rect
        x="48.880116"
@@ -175,8 +189,8 @@
     <rect
        x="48.880116"
        y="42.232422"
-       width="115.66593"
-       height="53.505623"
+       width="132.57728"
+       height="51.699557"
        id="rect962-2-1" />
     <rect
        x="48.880116"
@@ -192,9 +206,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.2205961"
-     inkscape:cx="440.94456"
-     inkscape:cy="253.922"
+     inkscape:zoom="1.1009655"
+     inkscape:cx="846.44066"
+     inkscape:cy="440.19129"
      inkscape:document-units="mm"
      inkscape:current-layer="svg8"
      inkscape:document-rotation="0"
@@ -228,18 +242,18 @@
        id="rect855"
        width="197.00748"
        height="115.00748"
-       x="0.49626139"
-       y="0.49626139" />
+       x="63.216019"
+       y="40.229721" />
     <ellipse
        style="fill:#ff3521;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.544241;stroke-linecap:round;stroke-opacity:0.997275"
        id="path857"
-       cx="134.52542"
-       cy="34.525425"
+       cx="197.24518"
+       cy="74.258881"
        rx="4.253304"
        ry="4.253305" />
     <g
        id="g1215-9"
-       transform="translate(78.353476,-45.11614)">
+       transform="translate(141.07323,-5.3826807)">
       <path
          style="fill:none;stroke:#000000;stroke-width:0.224163;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 49.409553,129.11614 h 4.473942"
@@ -251,13 +265,41 @@
     </g>
     <path
        style="fill:#ffffff;fill-opacity:0.986376;stroke:#ffffff;stroke-width:5.965;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 134.32255,49.075635 -0.13038,33.164678"
+       d="m 197.04231,88.809094 -0.13038,33.164676"
        id="path939"
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 132.23697,83.999998 c 0.91638,2.263529 2.7172,1.637964 4.82287,1.637964"
+       d="m 194.95673,123.73346 c 0.91638,2.26353 2.7172,1.63796 4.82287,1.63796"
        id="path941" />
+    <ellipse
+       style="display:inline;fill:#ffffff;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.20263;stroke-linecap:round;stroke-opacity:0.997275"
+       id="path857-1"
+       cx="249.93214"
+       cy="144.43195"
+       rx="9.3986816"
+       ry="9.3986835" />
+    <ellipse
+       style="display:inline;fill:#ffffff;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.20263;stroke-linecap:round;stroke-opacity:0.997275"
+       id="path857-1-4"
+       cx="249.69183"
+       cy="51.428337"
+       rx="9.3986816"
+       ry="9.3986835" />
+    <ellipse
+       style="display:inline;fill:#ffffff;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.20263;stroke-linecap:round;stroke-opacity:0.997275"
+       id="path857-1-2"
+       cx="73.53772"
+       cy="51.188026"
+       rx="9.3986816"
+       ry="9.3986835" />
+    <ellipse
+       style="display:inline;fill:#ffffff;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.20263;stroke-linecap:round;stroke-opacity:0.997275"
+       id="path857-1-2-4"
+       cx="73.057083"
+       cy="144.67226"
+       rx="9.3986816"
+       ry="9.3986835" />
   </g>
   <g
      inkscape:groupmode="layer"
@@ -276,55 +318,52 @@
      xml:space="preserve"
      id="text960"
      style="font-size:3.52778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';white-space:pre;shape-inside:url(#rect962);fill:#ffffff;"
-     transform="translate(-39.872092,-36.408793)"><tspan
+     transform="translate(40.473757,3.0825194)"><tspan
        x="48.880859"
        y="45.410085"><tspan
          style="shape-inside:url(#rect962)">Se connecter sur Lapem
 </tspan></tspan><tspan
        x="48.880859"
-       y="49.819811"><tspan
-         style="shape-inside:url(#rect962)">   Uniquement possible si la led &quot;Rouge&quot; reste allumée 
-</tspan></tspan><tspan
-       x="48.880859"
-       y="54.238106"><tspan
-         style="shape-inside:url(#rect962)">      </tspan><tspan
+       y="49.828381"><tspan
+         style="shape-inside:url(#rect962)">   </tspan><tspan
+         style="shape-inside:url(#rect962)">Les accès ci-dessous sont valables si la led &quot;Rouge&quot; reste allumée </tspan><tspan
          style="font-style:italic">(pas de clignottement)
 </tspan></tspan><tspan
        x="48.880859"
-       y="58.647833"><tspan
+       y="54.238104"><tspan
          style="shape-inside:url(#rect962)">  @IP : 10.3.141.1
 </tspan></tspan><tspan
        x="48.880859"
-       y="63.057558"><tspan
+       y="58.647829"><tspan
          style="shape-inside:url(#rect962)">   SSID : LapemNetwork
 </tspan></tspan><tspan
        x="48.880859"
-       y="67.467283"><tspan
+       y="63.057554"><tspan
          style="shape-inside:url(#rect962)">   Mot de Passe  : secret_password
+</tspan></tspan><tspan
+       x="48.880859"
+       y="67.467275"><tspan
+         style="shape-inside:url(#rect962)">
 </tspan></tspan><tspan
        x="48.880859"
        y="71.877004"><tspan
          style="shape-inside:url(#rect962)">
 </tspan></tspan><tspan
+       style="visibility:hidden"
        x="48.880859"
-       y="76.286733"><tspan
+       y="72.191335"><tspan
          style="shape-inside:url(#rect962)">
 </tspan></tspan><tspan
        style="visibility:hidden"
        x="48.880859"
-       y="78.247976"><tspan
-         style="shape-inside:url(#rect962)">
-</tspan></tspan><tspan
-       style="visibility:hidden"
-       x="48.880859"
-       y="82.657701"><tspan
+       y="76.60106"><tspan
          style="shape-inside:url(#rect962)">
 </tspan></tspan></text>
   <text
      xml:space="preserve"
      id="text960-3"
      style="font-size:5.64444px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';white-space:pre;shape-inside:url(#rect962-8);fill:#ffffff;"
-     transform="translate(104.10091,51.649228)"><tspan
+     transform="translate(167.1089,48.856945)"><tspan
        x="48.880859"
        y="47.316676"><tspan
          style="font-size:5.64444px;shape-inside:url(#rect962-8);fill:#ffffff">Lapem
@@ -357,7 +396,7 @@
      xml:space="preserve"
      id="text960-3-17"
      style="font-size:4.23333px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:start;white-space:pre;shape-inside:url(#rect962-8-2);fill:#ffffff;"
-     transform="translate(66.533387,-36.117497)"
+     transform="translate(108.44059,94.940722)"
      x="-0.037895255"
      y="0"><tspan
        x="48.880859"
@@ -372,30 +411,32 @@
      xml:space="preserve"
      id="text960-46"
      style="font-size:3.52778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';white-space:pre;shape-inside:url(#rect962-2);fill:#ffffff;"
-     transform="translate(-39.563544,-5.5356752)"><tspan
+     transform="translate(38.551197,79.872638)"><tspan
        x="48.880859"
        y="45.410085"><tspan
-         style="shape-inside:url(#rect962-2)">Le transfert de fichier ou modification de fichier se fait par l'intermédiaire </tspan></tspan><tspan
+         style="shape-inside:url(#rect962-2)">Le transfert de fichier ou modification de fichier se fait par </tspan></tspan><tspan
        x="48.880859"
        y="49.819811"><tspan
+         style="shape-inside:url(#rect962-2)">l'intermédiaire </tspan><tspan
          style="shape-inside:url(#rect962-2)">de votre PC à travers un lecteur réseau. 
 </tspan></tspan><tspan
        x="48.880859"
        y="54.229536"><tspan
+         style="shape-inside:url(#rect962-2)">  </tspan><tspan
          style="shape-inside:url(#rect962-2)">Connexion réseau :</tspan><tspan
          style="shape-inside:url(#rect962-2)">
 </tspan></tspan><tspan
        x="48.880859"
        y="58.639261"><tspan
-         style="shape-inside:url(#rect962-2)">    \\10.3.141.1\lapem  
+         style="shape-inside:url(#rect962-2)">      \\10.3.141.1\lapem  
 </tspan></tspan><tspan
        x="48.880859"
        y="63.048986"><tspan
-         style="shape-inside:url(#rect962-2)">    Login : pi
+         style="shape-inside:url(#rect962-2)">      Login : pi
 </tspan></tspan><tspan
        x="48.880859"
        y="67.458715"><tspan
-         style="shape-inside:url(#rect962-2)">    Mot de Passe: raspberry
+         style="shape-inside:url(#rect962-2)">      Mot de Passe: raspberry
 </tspan></tspan><tspan
        x="48.880859"
        y="71.868444"><tspan
@@ -407,7 +448,7 @@
 </tspan></tspan><tspan
        style="visibility:hidden"
        x="48.880859"
-       y="76.296804"><tspan
+       y="77.257742"><tspan
          style="shape-inside:url(#rect962-2)">
 </tspan></tspan></text>
   <text
@@ -469,53 +510,54 @@
      xml:space="preserve"
      id="text960-46-2"
      style="font-size:3.52778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';white-space:pre;shape-inside:url(#rect962-2-1);fill:#ffffff;"
-     transform="translate(-39.307691,25.601305)"><tspan
+     transform="translate(23.891721,33.713183)"><tspan
        x="48.880859"
        y="45.410085"><tspan
          style="shape-inside:url(#rect962-2-1)">Cette connexion va vous permettre 
 </tspan></tspan><tspan
        x="48.880859"
        y="49.819811"><tspan
-         style="shape-inside:url(#rect962-2-1)">  -  de copier des fichiers musique et de renommer le fichier transféré en 
+         style="shape-inside:url(#rect962-2-1)">  -  de copier des fichiers musique .mp3 ou .wav et de les renommer.
 </tspan></tspan><tspan
        x="48.880859"
        y="54.229536"><tspan
-         style="shape-inside:url(#rect962-2-1)">     &quot;audio.wav&quot;
+         style="shape-inside:url(#rect962-2-1)">      Lapem va jouer de préférence le fichier &quot;audio.mp3&quot;.
 </tspan></tspan><tspan
        x="48.880859"
        y="58.639261"><tspan
-         style="shape-inside:url(#rect962-2-1)">
+         style="shape-inside:url(#rect962-2-1)">      Si ce fichier n'existe pas, Lapem va jouer le fichier &quot;audio.wav&quot;
 </tspan></tspan><tspan
        x="48.880859"
        y="63.048986"><tspan
-         style="shape-inside:url(#rect962-2-1)">      Lapem va jouer le fichier : &quot;audio.wav&quot;
-</tspan></tspan><tspan
-       x="48.880859"
-       y="67.458715"><tspan
-         style="shape-inside:url(#rect962-2-1)">      Si nécessaire vous pouvez utilez le programme &quot;Audacity&quot; pour  
-</tspan></tspan><tspan
-       x="48.880859"
-       y="71.868444"><tspan
-         style="shape-inside:url(#rect962-2-1)">      convertir les fichiers audio en  fichier &quot;.vaw&quot;
-</tspan></tspan><tspan
-       x="48.880859"
-       y="76.278173"><tspan
          style="shape-inside:url(#rect962-2-1)">
 </tspan></tspan><tspan
        x="48.880859"
-       y="80.687902"><tspan
+       y="67.467285"><tspan
+         style="shape-inside:url(#rect962-2-1)">      </tspan><tspan
+         style="font-style:italic">Si nécessaire vous pouvez utilez le programme &quot;Audacity&quot; pour  
+</tspan></tspan><tspan
+       x="48.880859"
+       y="71.885582"><tspan
+         style="font-style:italic">      convertir les fichiers &quot;.mp3&quot; en  fichier &quot;.wav&quot;
+</tspan></tspan><tspan
+       x="48.880859"
+       y="76.295309"><tspan
+         style="shape-inside:url(#rect962-2-1)">
+</tspan></tspan><tspan
+       x="48.880859"
+       y="80.705038"><tspan
          style="shape-inside:url(#rect962-2-1)"> -  d'ajuster le volume de lecture à travers le fichier volume.cfg
 </tspan></tspan><tspan
        x="48.880859"
-       y="85.097631"><tspan
+       y="85.114767"><tspan
          style="shape-inside:url(#rect962-2-1)">
 </tspan></tspan><tspan
        x="48.880859"
-       y="89.50736"><tspan
+       y="89.524496"><tspan
          style="shape-inside:url(#rect962-2-1)">
 </tspan></tspan><tspan
        x="48.880859"
-       y="93.917089"><tspan
+       y="93.934225"><tspan
          style="shape-inside:url(#rect962-2-1)">
 </tspan></tspan></text>
 </svg>
