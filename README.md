@@ -7,6 +7,7 @@ La documentation se trouve dans le répertoire documents : "principle.md"
 ## Mode : Point d'accès : 
 
 La Led Rouge reste allumée
+
     @IP : 10.3.141.1
     SSID : ssid=LapemNetwork
     Mot de Passe  : secret_password
@@ -17,9 +18,11 @@ Cette action peut se faire à travers le scipt
 ## Mode Client : 
 
 La Led Rouge clignote
+
     @IP : votre réseau
 
 Cette action peut se faire à travers le scipt
+
     bash sap2cl.sh
     
 # Quelques comandes en ssh:
@@ -29,13 +32,13 @@ Pensez à tuer le process qui tourne en tâches de fond
     ps -ef | grep lapem 
     sudo kill -9 [process]
     
-
 # Principe
 
 Lapem va jouer le fichier : "audio.wav".
 Si nécessaire vous pouvez utilez le programme "Audacity" pour convertir les fichiers audio en  fichier ".vaw"
 
 l'accès au Lapem se fait à travers connexion ssh ou samba
+
     login : pi
     password: raspberry
 
