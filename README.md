@@ -1,6 +1,6 @@
 # Lapem
 Lecteur Audio Pour Ecole Maternelle
-La documentation se trouve dans le répertoire documents : "principle.md"
+La documentation se trouve sur le [Wiki](https://github.com/ckl67/lapem/wiki)
 
 # Mode de connexion
    
