@@ -243,27 +243,24 @@ def init():
     GPIO.add_event_detect(BUT_PLAY_PAUSE, GPIO.RISING, callback=state_machine, bouncetime=300)
     GPIO.add_event_detect(BUT_BACK, GPIO.RISING, callback=state_machine, bouncetime=300)
 
-    # Read Audio level
-    read_volume()
-
-    exit()
 
     mixer.init() #Initialzing pyamge mixer
 
     #Loading Music File
     mixer.music.load('/home/pi/lapem/music/audio.wav')
+    v_audio_level = read_volume()
     mixer.music.set_volume(v_audio_level)
     mixer.music.play()  #Playing Music with Pygame
     mixer.music.pause() #pausing music file
 
 # ---------------------------------------------
-# Read Volume in file : volume.txt
+# Read Volume in file : volume.cfg, and return the value.
 # ---------------------------------------------
 def read_volume():
     string1 = 'Volume'
   
     # opening a text file
-    file1 = open("volume.txt", "r")
+    file1 = open("music/volume.cfg", "r")
   
     # setting flag and index to 0
     flag = 0
@@ -287,10 +284,11 @@ def read_volume():
                 res = str(float(possibility.replace(',', '.')))
             except ValueError:
                 pass
-        print(res)
         
     # closing text file    
-    file1.close() 
+    file1.close()
+
+    return(float(res)) 
 
 # ---------------------------------------------
 # Button Callback function
@@ -335,6 +333,7 @@ def state_machine(vbut):
         c_State = STATE_STOP
         mixer.music.stop()
         mixer.music.load('/home/pi/lapem/music/audio.wav')
+        v_audio_level = read_volume()
         mixer.music.set_volume(v_audio_level)
         mixer.music.play()  #Playing Music with Pygame
         mixer.music.pause() #pausing music file
