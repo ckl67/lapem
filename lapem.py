@@ -9,9 +9,15 @@
 #       /usr/bin/python3 /home/pi/lapem/lapem.py &
 #
 #   Before to code, check that no process is running !
-#   ps -ef | grep lapem
+#       ps -ef | grep lapem
 #   if there should be, kill it
-#   sudo kill -9 [process]
+#       sudo kill -9 [process]
+#
+#   Switch from AP --> Client
+#       bash sap2cl.sh
+#   Switch from Client --> AP
+#       bash scl2ap.sh
+#
 # ========================================================
 
 # ========================================================
@@ -349,10 +355,8 @@ def state_machine(vbut):
         # Verify
         if os.path.isfile(path) :
             mixer.music.load('/home/pi/lapem/music/audio.mp3')
-            print("ok")
         else:
             mixer.music.load('/home/pi/lapem/music/audio.wav')
-            print("nok")
 
         v_audio_level = read_volume()
         mixer.music.set_volume(v_audio_level)
