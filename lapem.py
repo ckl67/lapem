@@ -260,7 +260,7 @@ def read_volume():
     string1 = 'Volume'
   
     # opening a text file
-    file1 = open("music/volume.cfg", "r")
+    file1 = open("/home/pi/lapem/music/volume.cfg", "r")
   
     # setting flag and index to 0
     flag = 0
