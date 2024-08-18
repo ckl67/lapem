@@ -45,8 +45,19 @@ Une fois connecté sur le lecteur réseau duLapem, cette connexion va vous perme
 
 *  d'ajuster le volume de lecture à travers le fichier volume.cfg
 
-l'accès au Lapem se fait à travers connexion ssh ou samba
+# Debug
+ Après quelques mois d'utilisations, plus moyen de se connecter sur l'interface réseau !!
+ Comme l'ensemble Lapem est intégré dans une boite avec accès difficile, sortir la carte SD, la mettre sur un autre Raspberry.
+ Connecter le Rasberry en RJ45 sur le réseau maison
+ A travers un scanner réseau, récupérer l'adresse IP, se connecter en ssh sur le Raspberry : 
+   login : pi
+   password: raspberry
 
+
+
+
+# Accès
+l'accès au Lapem se fait à travers connexion ssh ou samba
     login : pi
     password: raspberry
 
