@@ -13,11 +13,14 @@
 #   if there should be, kill it
 #       sudo kill -9 [process]
 #
-#   Switch from AP --> Client
-#       bash sap2cl.sh
-#   Switch from Client --> AP
-#       bash scl2ap.sh
+# When the program is launched in the event of a :
+#		GPIO.add_event_detect(BUT_PLAY_PAUSE, GPIO.RISING, callback=state_machine, bouncetime=300)
+#		RuntimeError: Failed to add edge detection
+#  I solved the problem by installing the new gpio library:
 #
+#	sudo apt remove python3-rpi.gpio
+#	sudo apt install python3-rpi-lgpio
+
 # ========================================================
 
 # ========================================================
@@ -42,15 +45,6 @@ from pygame import mixer # sudo apt-get install python3-pygame
 # DEBUG_LEVEL
 # --------------------------------
 DEBUG_LEVEL = 0
-
-# --------------------------------
-# Lapem Mode
-#   MODE_AP     : Access Point
-#   MODE_CLIENT : Wifi Client
-# --------------------------------
-
-MODE_AP = 0
-MODE_CLIENT = 1
 
 # --------------------------------
 # Will check every 20 seconds the Mode Status
@@ -209,9 +203,6 @@ t_LPower = -1
 # Led Play timer
 t_LPlay = -1
 
-# Current Lapem Mode
-c_Mode = MODE_AP
-
 # Timer Mode
 t_Mode = 0
 
@@ -315,7 +306,6 @@ def read_volume():
 def state_machine(vbut):
 
     global c_State
-    global c_Mode
     global sw_PlayPause
 
     global cnt_BlinkLedPlay
@@ -368,7 +358,6 @@ def state_machine(vbut):
 # ---------------------------------------------
 def p_Mode():
     global t_Mode
-    global c_Mode
 
     ip_address = ""
 
@@ -384,19 +373,12 @@ def p_Mode():
                 continue
         pDbg2("IP: {}".format(ip_address))
 
-        if ip_address == "10.3.141.1":
-            c_Mode = MODE_AP
-        else:
-            c_Mode = MODE_CLIENT
+        LedState[c_State][ID_POWER]["LedMode"] = STATIC
+        pDbg1("AP Mode : IP = {}".format(ip_address))
 
-        if c_Mode == MODE_AP :
-            LedState[c_State][ID_POWER]["LedMode"] = STATIC
-            pDbg1("AP Mode : IP = {}".format(ip_address))
-
-        else:
-            # c_Mode = MODE_CLIENT
-            LedState[c_State][ID_POWER]["LedMode"] = INFINITY
-            pDbg1("Client Mode : IP = {}".format(ip_address))
+        # c_Mode = MODE_CLIENT
+        #    LedState[c_State][ID_POWER]["LedMode"] = INFINITY
+        #    pDbg1("Client Mode : IP = {}".format(ip_address))
 
 # ---------------------------------------------
 #
