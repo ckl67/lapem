@@ -206,9 +206,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.1009655"
-     inkscape:cx="846.44066"
-     inkscape:cy="440.19129"
+     inkscape:zoom="2.1275068"
+     inkscape:cx="567.07536"
+     inkscape:cy="370.69632"
      inkscape:document-units="mm"
      inkscape:current-layer="svg8"
      inkscape:document-rotation="0"
@@ -321,32 +321,30 @@
      transform="translate(40.473757,3.0825194)"><tspan
        x="48.880859"
        y="45.410085"><tspan
-         style="shape-inside:url(#rect962)">Se connecter sur Lapem
+         style="shape-inside:url(#rect962)">Point d'accès Wifi Lapem
 </tspan></tspan><tspan
        x="48.880859"
-       y="49.828381"><tspan
-         style="shape-inside:url(#rect962)">   </tspan><tspan
-         style="shape-inside:url(#rect962)">Les accès ci-dessous sont valables si la led &quot;Rouge&quot; reste allumée </tspan><tspan
-         style="font-style:italic">(pas de clignottement)
-</tspan></tspan><tspan
-       x="48.880859"
-       y="54.238104"><tspan
-         style="shape-inside:url(#rect962)">  @IP : 10.3.141.1
-</tspan></tspan><tspan
-       x="48.880859"
-       y="58.647829"><tspan
+       y="49.819811"><tspan
          style="shape-inside:url(#rect962)">   SSID : LapemNetwork
 </tspan></tspan><tspan
        x="48.880859"
-       y="63.057554"><tspan
-         style="shape-inside:url(#rect962)">   Mot de Passe  : secret_password
+       y="54.229536"><tspan
+         style="shape-inside:url(#rect962)">   Mot de Passe  : SecretPassword
 </tspan></tspan><tspan
        x="48.880859"
-       y="67.467275"><tspan
+       y="58.639261"><tspan
+         style="shape-inside:url(#rect962)">  @IP : 10.3.141.1
+</tspan></tspan><tspan
+       x="48.880859"
+       y="63.048986"><tspan
          style="shape-inside:url(#rect962)">
 </tspan></tspan><tspan
        x="48.880859"
-       y="71.877004"><tspan
+       y="67.458715"><tspan
+         style="shape-inside:url(#rect962)">
+</tspan></tspan><tspan
+       x="48.880859"
+       y="71.868444"><tspan
          style="shape-inside:url(#rect962)">
 </tspan></tspan><tspan
        style="visibility:hidden"
@@ -363,7 +361,7 @@
      xml:space="preserve"
      id="text960-3"
      style="font-size:5.64444px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';white-space:pre;shape-inside:url(#rect962-8);fill:#ffffff;"
-     transform="translate(167.1089,48.856945)"><tspan
+     transform="translate(135.7694,2.8425984)"><tspan
        x="48.880859"
        y="47.316676"><tspan
          style="font-size:5.64444px;shape-inside:url(#rect962-8);fill:#ffffff">Lapem
@@ -396,12 +394,12 @@
      xml:space="preserve"
      id="text960-3-17"
      style="font-size:4.23333px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:start;white-space:pre;shape-inside:url(#rect962-8-2);fill:#ffffff;"
-     transform="translate(108.44059,94.940722)"
+     transform="translate(96.798871,94.940722)"
      x="-0.037895255"
      y="0"><tspan
        x="48.880859"
        y="46.045612"><tspan
-         style="font-size:3.52778px;text-align:start;text-anchor:start">Version Hardware 1.0  - Année : 2022
+         style="font-size:3.52778px;text-align:start;text-anchor:start">Version Hardware 1.0  - Année : 2022 (Modification 2024)
 </tspan></tspan><tspan
        x="48.880859"
        y="51.337277"><tspan
@@ -411,36 +409,33 @@
      xml:space="preserve"
      id="text960-46"
      style="font-size:3.52778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';white-space:pre;shape-inside:url(#rect962-2);fill:#ffffff;"
-     transform="translate(38.551197,79.872638)"><tspan
+     transform="translate(35.127469,73.400766)"><tspan
        x="48.880859"
        y="45.410085"><tspan
-         style="shape-inside:url(#rect962-2)">Le transfert de fichier ou modification de fichier se fait par </tspan></tspan><tspan
+         style="shape-inside:url(#rect962-2)">Le transfert de fichiers ou la modification de fichiers se fait </tspan></tspan><tspan
        x="48.880859"
        y="49.819811"><tspan
-         style="shape-inside:url(#rect962-2)">l'intermédiaire </tspan><tspan
-         style="shape-inside:url(#rect962-2)">de votre PC à travers un lecteur réseau. 
+         style="shape-inside:url(#rect962-2)">par l'intermédiaire de votre PC à travers un partage réseau 
 </tspan></tspan><tspan
        x="48.880859"
        y="54.229536"><tspan
-         style="shape-inside:url(#rect962-2)">  </tspan><tspan
-         style="shape-inside:url(#rect962-2)">Connexion réseau :</tspan><tspan
-         style="shape-inside:url(#rect962-2)">
+         style="shape-inside:url(#rect962-2)">  * Machine Linux : smb://10.3.141.1/lapem 
 </tspan></tspan><tspan
        x="48.880859"
        y="58.639261"><tspan
-         style="shape-inside:url(#rect962-2)">      \\10.3.141.1\lapem  
+         style="shape-inside:url(#rect962-2)">  * Machine Windows :  \10.3.141.1\lapem 
 </tspan></tspan><tspan
        x="48.880859"
        y="63.048986"><tspan
-         style="shape-inside:url(#rect962-2)">      Login : pi
+         style="shape-inside:url(#rect962-2)">  Accès :
 </tspan></tspan><tspan
        x="48.880859"
        y="67.458715"><tspan
-         style="shape-inside:url(#rect962-2)">      Mot de Passe: raspberry
+         style="shape-inside:url(#rect962-2)">   Login : pi
 </tspan></tspan><tspan
        x="48.880859"
        y="71.868444"><tspan
-         style="shape-inside:url(#rect962-2)">
+         style="shape-inside:url(#rect962-2)">   Mot de Passe: raspberry
 </tspan></tspan><tspan
        x="48.880859"
        y="76.278173"><tspan
@@ -449,6 +444,11 @@
        style="visibility:hidden"
        x="48.880859"
        y="77.257742"><tspan
+         style="shape-inside:url(#rect962-2)">
+</tspan></tspan><tspan
+       style="visibility:hidden"
+       x="48.880859"
+       y="81.667467"><tspan
          style="shape-inside:url(#rect962-2)">
 </tspan></tspan></text>
   <text
@@ -510,47 +510,47 @@
      xml:space="preserve"
      id="text960-46-2"
      style="font-size:3.52778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';white-space:pre;shape-inside:url(#rect962-2-1);fill:#ffffff;"
-     transform="translate(23.891721,33.713183)"><tspan
+     transform="matrix(0.9004164,0,0,1,27.701119,25.775678)"><tspan
        x="48.880859"
        y="45.410085"><tspan
-         style="shape-inside:url(#rect962-2-1)">Cette connexion va vous permettre 
-</tspan></tspan><tspan
-       x="48.880859"
-       y="49.819811"><tspan
-         style="shape-inside:url(#rect962-2-1)">  -  de copier des fichiers musique .mp3 ou .wav et de les renommer.
-</tspan></tspan><tspan
-       x="48.880859"
-       y="54.229536"><tspan
-         style="shape-inside:url(#rect962-2-1)">      Lapem va jouer de préférence le fichier &quot;audio.mp3&quot;.
-</tspan></tspan><tspan
-       x="48.880859"
-       y="58.639261"><tspan
-         style="shape-inside:url(#rect962-2-1)">      Si ce fichier n'existe pas, Lapem va jouer le fichier &quot;audio.wav&quot;
-</tspan></tspan><tspan
-       x="48.880859"
-       y="63.048986"><tspan
          style="shape-inside:url(#rect962-2-1)">
 </tspan></tspan><tspan
        x="48.880859"
-       y="67.467285"><tspan
+       y="49.819811"><tspan
+         style="shape-inside:url(#rect962-2-1)">Une fois connecté au Lapem vous allez pouvoir : 
+</tspan></tspan><tspan
+       x="48.880859"
+       y="54.229536"><tspan
+         style="shape-inside:url(#rect962-2-1)">  -  copier des fichiers musique .mp3 ou .wav et de les renommer.
+</tspan></tspan><tspan
+       x="48.880859"
+       y="58.639261"><tspan
+         style="shape-inside:url(#rect962-2-1)">      Lapem va jouer de préférence le fichier &quot;audio.mp3&quot;.
+</tspan></tspan><tspan
+       x="48.880859"
+       y="63.048986"><tspan
+         style="shape-inside:url(#rect962-2-1)">      Si ce fichier n'existe pas, Lapem va jouer le fichier &quot;audio.wav&quot;
+</tspan></tspan><tspan
+       x="48.880859"
+       y="67.458715"><tspan
+         style="shape-inside:url(#rect962-2-1)">
+</tspan></tspan><tspan
+       x="48.880859"
+       y="71.877014"><tspan
          style="shape-inside:url(#rect962-2-1)">      </tspan><tspan
          style="font-style:italic">Si nécessaire vous pouvez utilez le programme &quot;Audacity&quot; pour  
 </tspan></tspan><tspan
        x="48.880859"
-       y="71.885582"><tspan
+       y="76.295311"><tspan
          style="font-style:italic">      convertir les fichiers &quot;.mp3&quot; en  fichier &quot;.wav&quot;
 </tspan></tspan><tspan
        x="48.880859"
-       y="76.295309"><tspan
-         style="shape-inside:url(#rect962-2-1)">
-</tspan></tspan><tspan
-       x="48.880859"
        y="80.705038"><tspan
-         style="shape-inside:url(#rect962-2-1)"> -  d'ajuster le volume de lecture à travers le fichier volume.cfg
+         style="shape-inside:url(#rect962-2-1)">
 </tspan></tspan><tspan
        x="48.880859"
        y="85.114767"><tspan
-         style="shape-inside:url(#rect962-2-1)">
+         style="shape-inside:url(#rect962-2-1)"> -  ajuster le volume de lecture à travers le fichier volume.cfg
 </tspan></tspan><tspan
        x="48.880859"
        y="89.524496"><tspan
@@ -558,6 +558,11 @@
 </tspan></tspan><tspan
        x="48.880859"
        y="93.934225"><tspan
+         style="shape-inside:url(#rect962-2-1)">
+</tspan></tspan><tspan
+       style="visibility:hidden"
+       x="48.880859"
+       y="97.109304"><tspan
          style="shape-inside:url(#rect962-2-1)">
 </tspan></tspan></text>
 </svg>

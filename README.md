@@ -16,7 +16,8 @@ Lapem va jouer les fichiers : "audio.mp3" ou "audio.wav".
 
 # Accès réseau au Lapem
 
-L'accès au Lapem se fait à travers connexion ssh ou NFS: réseau local, ou //10.3.141.1/lapem
+L'accès au Lapem se fait à travers connexion Samba 
+avec smb://10.3.141.1/lapem (Linux) ou \10.3.141.1\lapem (Windows).
     login : pi
     password: raspberry
 
@@ -28,15 +29,6 @@ cette connexion va vous permettre
       convertir les fichiers ".mp3" en  fichier ".wav"
 
 *  d'ajuster le volume de lecture à travers le fichier volume.cfg
-
-# Debug
-
- Après quelques mois d'utilisations, plus moyen de se connecter sur l'interface réseau !!
- Comme l'ensemble Lapem est intégré dans une boite avec accès difficile, sortir la carte SD, la mettre sur un autre Raspberry.
- Connecter le Rasberry en RJ45 sur le réseau maison
- A travers un scanner réseau, récupérer l'adresse IP, se connecter en ssh sur le Raspberry : 
-   login : pi
-   password: raspberry
 
 
 # Quelques comandes en ssh:
