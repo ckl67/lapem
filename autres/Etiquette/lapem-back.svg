@@ -153,8 +153,8 @@
     <rect
        x="48.880116"
        y="42.232422"
-       width="96.711579"
-       height="31.847477"
+       width="98.822091"
+       height="42.196327"
        id="rect962-2" />
     <rect
        x="48.880116"
@@ -206,9 +206,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.1275068"
-     inkscape:cx="567.07536"
-     inkscape:cy="370.69632"
+     inkscape:zoom="1.5043745"
+     inkscape:cx="561.90753"
+     inkscape:cy="383.39575"
      inkscape:document-units="mm"
      inkscape:current-layer="svg8"
      inkscape:document-rotation="0"
@@ -318,7 +318,7 @@
      xml:space="preserve"
      id="text960"
      style="font-size:3.52778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';white-space:pre;shape-inside:url(#rect962);fill:#ffffff;"
-     transform="translate(40.473757,3.0825194)"><tspan
+     transform="translate(40.473757,2.024186)"><tspan
        x="48.880859"
        y="45.410085"><tspan
          style="shape-inside:url(#rect962)">Point d'accès Wifi Lapem
@@ -408,48 +408,55 @@
   <text
      xml:space="preserve"
      id="text960-46"
-     style="font-size:3.52778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';white-space:pre;shape-inside:url(#rect962-2);fill:#ffffff;"
-     transform="translate(35.127469,73.400766)"><tspan
+     style="font-size:3.40937px;line-height:1.15;font-family:Arial;-inkscape-font-specification:'Arial, Normal';white-space:pre;shape-inside:url(#rect962-2);fill:#ffffff;"
+     transform="matrix(1,0,0,1.0706684,37.956875,59.482746)"><tspan
        x="48.880859"
-       y="45.410085"><tspan
-         style="shape-inside:url(#rect962-2)">Le transfert de fichiers ou la modification de fichiers se fait </tspan></tspan><tspan
+       y="45.132958"><tspan
+         style="font-size:3.40937px;shape-inside:url(#rect962-2)">Le transfert de fichiers ou la modification de fichiers se fait par </tspan></tspan><tspan
        x="48.880859"
-       y="49.819811"><tspan
-         style="shape-inside:url(#rect962-2)">par l'intermédiaire de votre PC à travers un partage réseau 
+       y="49.053735"><tspan
+         style="font-size:3.40937px;shape-inside:url(#rect962-2)">l'intermédiaire de votre PC à travers un partage réseau
 </tspan></tspan><tspan
        x="48.880859"
-       y="54.229536"><tspan
-         style="shape-inside:url(#rect962-2)">  * Machine Linux : smb://10.3.141.1/lapem 
+       y="52.974511"><tspan
+         style="font-size:3.40937px;shape-inside:url(#rect962-2)">Le lecteur réseau devrait apparaître dans votre navigateur. 
 </tspan></tspan><tspan
        x="48.880859"
-       y="58.639261"><tspan
-         style="shape-inside:url(#rect962-2)">  * Machine Windows :  \10.3.141.1\lapem 
+       y="56.895287"><tspan
+         style="font-size:3.40937px;shape-inside:url(#rect962-2)">Sinon 
 </tspan></tspan><tspan
        x="48.880859"
-       y="63.048986"><tspan
-         style="shape-inside:url(#rect962-2)">  Accès :
+       y="60.816064"><tspan
+         style="font-size:3.40937px;shape-inside:url(#rect962-2)">  * Machine Linux : smb://10.3.141.1/lapem 
 </tspan></tspan><tspan
        x="48.880859"
-       y="67.458715"><tspan
-         style="shape-inside:url(#rect962-2)">   Login : pi
+       y="64.73684"><tspan
+         style="font-size:3.40937px;shape-inside:url(#rect962-2)">  * Machine Windows :  \10.3.141.1\lapem 
 </tspan></tspan><tspan
        x="48.880859"
-       y="71.868444"><tspan
-         style="shape-inside:url(#rect962-2)">   Mot de Passe: raspberry
+       y="68.657617"><tspan
+         style="font-size:3.40937px;shape-inside:url(#rect962-2)">  Accès :
 </tspan></tspan><tspan
        x="48.880859"
-       y="76.278173"><tspan
-         style="shape-inside:url(#rect962-2)">
+       y="72.578393"><tspan
+         style="font-size:3.40937px;shape-inside:url(#rect962-2)">   Login : pi
+</tspan></tspan><tspan
+       x="48.880859"
+       y="76.499169"><tspan
+         style="font-size:3.40937px;shape-inside:url(#rect962-2)">   Mot de Passe: raspberry
+</tspan></tspan><tspan
+       x="48.880859"
+       y="80.419946"><tspan
+         style="font-size:3.40937px;shape-inside:url(#rect962-2)">
+</tspan></tspan><tspan
+       x="48.880859"
+       y="84.340722"><tspan
+         style="font-size:3.40937px;shape-inside:url(#rect962-2)">
 </tspan></tspan><tspan
        style="visibility:hidden"
        x="48.880859"
-       y="77.257742"><tspan
-         style="shape-inside:url(#rect962-2)">
-</tspan></tspan><tspan
-       style="visibility:hidden"
-       x="48.880859"
-       y="81.667467"><tspan
-         style="shape-inside:url(#rect962-2)">
+       y="87.330224"><tspan
+         style="font-size:3.40937px;shape-inside:url(#rect962-2)">
 </tspan></tspan></text>
   <text
      xml:space="preserve"
@@ -509,60 +516,117 @@
   <text
      xml:space="preserve"
      id="text960-46-2"
-     style="font-size:3.52778px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';white-space:pre;shape-inside:url(#rect962-2-1);fill:#ffffff;"
-     transform="matrix(0.9004164,0,0,1,27.701119,25.775678)"><tspan
+     style="font-size:3.71774px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Normal';white-space:pre;shape-inside:url(#rect962-2-1);fill:#ffffff;"
+     transform="matrix(0.9004164,0,0,1,27.701119,19.954841)"><tspan
        x="48.880859"
-       y="45.410085"><tspan
+       y="45.581193"><tspan
          style="shape-inside:url(#rect962-2-1)">
 </tspan></tspan><tspan
        x="48.880859"
-       y="49.819811"><tspan
+       y="50.228368"><tspan
          style="shape-inside:url(#rect962-2-1)">Une fois connecté au Lapem vous allez pouvoir : 
 </tspan></tspan><tspan
        x="48.880859"
-       y="54.229536"><tspan
+       y="54.875542"><tspan
          style="shape-inside:url(#rect962-2-1)">  -  copier des fichiers musique .mp3 ou .wav et de les renommer.
 </tspan></tspan><tspan
        x="48.880859"
-       y="58.639261"><tspan
+       y="59.522717"><tspan
          style="shape-inside:url(#rect962-2-1)">      Lapem va jouer de préférence le fichier &quot;audio.mp3&quot;.
 </tspan></tspan><tspan
        x="48.880859"
-       y="63.048986"><tspan
+       y="64.169892"><tspan
          style="shape-inside:url(#rect962-2-1)">      Si ce fichier n'existe pas, Lapem va jouer le fichier &quot;audio.wav&quot;
 </tspan></tspan><tspan
        x="48.880859"
-       y="67.458715"><tspan
-         style="shape-inside:url(#rect962-2-1)">
-</tspan></tspan><tspan
-       x="48.880859"
-       y="71.877014"><tspan
+       y="68.826095"><tspan
          style="shape-inside:url(#rect962-2-1)">      </tspan><tspan
-         style="font-style:italic">Si nécessaire vous pouvez utilez le programme &quot;Audacity&quot; pour  
+         style="font-style:italic;font-size:3.71774px">Si nécessaire vous pouvez utilez le programme &quot;Audacity&quot; pour  
 </tspan></tspan><tspan
        x="48.880859"
-       y="76.295311"><tspan
-         style="font-style:italic">      convertir les fichiers &quot;.mp3&quot; en  fichier &quot;.wav&quot;
+       y="73.482299"><tspan
+         style="font-style:italic;font-size:3.71774px">      convertir les fichiers &quot;.mp3&quot; en  fichier &quot;.wav&quot;
 </tspan></tspan><tspan
        x="48.880859"
-       y="80.705038"><tspan
-         style="shape-inside:url(#rect962-2-1)">
-</tspan></tspan><tspan
-       x="48.880859"
-       y="85.114767"><tspan
+       y="78.129471"><tspan
          style="shape-inside:url(#rect962-2-1)"> -  ajuster le volume de lecture à travers le fichier volume.cfg
 </tspan></tspan><tspan
        x="48.880859"
-       y="89.524496"><tspan
+       y="82.776643"><tspan
          style="shape-inside:url(#rect962-2-1)">
 </tspan></tspan><tspan
        x="48.880859"
-       y="93.934225"><tspan
+       y="87.423814"><tspan
          style="shape-inside:url(#rect962-2-1)">
 </tspan></tspan><tspan
-       style="visibility:hidden"
        x="48.880859"
-       y="97.109304"><tspan
+       y="92.070985"><tspan
          style="shape-inside:url(#rect962-2-1)">
 </tspan></tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:4.23333px;line-height:0;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:center;text-anchor:middle;fill:#f9f9f9;stroke-width:0.264583"
+     x="230.57341"
+     y="77.209557"
+     id="text1162"><tspan
+       sodipodi:role="line"
+       id="tspan1160"
+       x="230.57341"
+       y="77.209557"
+       style="font-size:4.23333px;line-height:1.25;fill:#f9f9f9;stroke-width:0.264583">Appuyer 1 sec. </tspan><tspan
+       sodipodi:role="line"
+       x="230.57341"
+       y="82.501221"
+       style="font-size:4.23333px;line-height:1.25;fill:#f9f9f9;stroke-width:0.264583"
+       id="tspan1195">pour allumer le Lapem</tspan><tspan
+       sodipodi:role="line"
+       x="230.57341"
+       y="87.792877"
+       style="font-size:4.23333px;line-height:1.25;fill:#f9f9f9;stroke-width:0.264583"
+       id="tspan1197">Il met 50 sec. à démarrer </tspan><tspan
+       sodipodi:role="line"
+       x="230.57341"
+       y="93.084541"
+       style="font-size:4.23333px;line-height:1.25;fill:#f9f9f9;stroke-width:0.264583"
+       id="tspan1199">LED Rouge allumée</tspan><tspan
+       sodipodi:role="line"
+       x="230.57341"
+       y="98.376205"
+       style="font-size:4.23333px;line-height:1.25;fill:#f9f9f9;stroke-width:0.264583"
+       id="tspan1201" /><tspan
+       sodipodi:role="line"
+       x="230.57341"
+       y="103.66787"
+       style="font-size:4.23333px;line-height:1.25;fill:#f9f9f9;stroke-width:0.264583"
+       id="tspan1203">Appuyer 10 sec.</tspan><tspan
+       sodipodi:role="line"
+       x="230.57341"
+       y="108.95953"
+       style="font-size:4.23333px;line-height:1.25;fill:#f9f9f9;stroke-width:0.264583"
+       id="tspan1164">pour éteindre le Lapem</tspan><tspan
+       sodipodi:role="line"
+       x="230.57341"
+       y="114.25119"
+       style="font-size:4.23333px;line-height:1.25;fill:#f9f9f9;stroke-width:0.264583"
+       id="tspan1166">et attendre que </tspan><tspan
+       sodipodi:role="line"
+       x="230.57341"
+       y="119.54285"
+       style="font-size:4.23333px;line-height:1.25;fill:#f9f9f9;stroke-width:0.264583"
+       id="tspan1184">la LED Rouge soit</tspan><tspan
+       sodipodi:role="line"
+       x="230.57341"
+       y="124.83452"
+       style="font-size:4.23333px;line-height:1.25;fill:#f9f9f9;stroke-width:0.264583"
+       id="tspan1168">éteinte</tspan><tspan
+       sodipodi:role="line"
+       x="230.57341"
+       y="130.12617"
+       style="font-size:4.23333px;line-height:1.25;fill:#f9f9f9;stroke-width:0.264583"
+       id="tspan1178" /><tspan
+       sodipodi:role="line"
+       x="230.57341"
+       y="132.772"
+       style="font-size:4.23333px;line-height:1.25;fill:#f9f9f9;stroke-width:0.264583"
+       id="tspan1182" /></text>
 </svg>
